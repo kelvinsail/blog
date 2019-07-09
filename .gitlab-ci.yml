@@ -1,0 +1,15 @@
+image: node:8.11.2
+
+pages:
+  cache:
+    paths:
+    - node_modules/
+
+  script:
+  - npm install
+  - hexo deploy
+  artifacts:
+    paths:
+    - public
+  only:
+  - master

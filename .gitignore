@@ -13,3 +13,5 @@ public/
 .idea/workspace.xml
 .idea/inspectionProfiles/Project_Default.xml
 .idea/jsLinters/jshint.xml
+/.idea/blog.source.iml
+/themes/next

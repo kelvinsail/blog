@@ -5,13 +5,6 @@ db.json
 node_modules/
 public/
 .deploy*/
-.idea/encodings.xml
-.idea/kelvin_blog.iml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
-.idea/workspace.xml
-.idea/inspectionProfiles/Project_Default.xml
-.idea/jsLinters/jshint.xml
+.idea/
 /.idea/blog.source.iml
-/themes/next
+

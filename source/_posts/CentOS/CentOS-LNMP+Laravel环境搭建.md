@@ -10,7 +10,6 @@ categories:
 author: yifan
 date: 2018-02-06 22:39:00
 ---
----
 # 1.安装vim、screen、wget；
 ```
 yum install vim screen wget
@@ -28,16 +27,21 @@ wget -c http://soft.vpser.net/lnmp/lnmp1.4.tar.gz && tar zxf lnmp1.4.tar.gz && c
 screen –R lnmp
 ```
 # 3.选择MySQL版本，设置密码；
-![image.png](http://upload-images.jianshu.io/upload_images/3867295-604697c126d13176.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620)
+
+![upload successful](/images/pasted-77.png)
 
 # 4.确认是否安装InnoDB；
-![图片 2.png](http://upload-images.jianshu.io/upload_images/3867295-27dc22ee23184493.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620)
+
+![upload successful](/images/pasted-78.png)
 
 # 5.选择PHP版本；
-![图片 3.png](http://upload-images.jianshu.io/upload_images/3867295-30e61a8f7a67f81e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620)
+
+![upload successful](/images/pasted-79.png)
 
 # 6.选择MemoryAlloc工具；
-![图片 4.png](http://upload-images.jianshu.io/upload_images/3867295-55c16da85ff71329.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/620)
+
+![upload successful](/images/pasted-80.png)
+
 # 7.等待安装完成
 # 8.安装完成后，进入mysql，开启mysql远程授权
 ```

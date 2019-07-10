@@ -7,7 +7,6 @@ categories:
 author: yifan
 date: 2018-12-11 10:23:00
 ---
----
 ## 1、查看目前内存配置情况
 > 第一种方法：运行free -h
 

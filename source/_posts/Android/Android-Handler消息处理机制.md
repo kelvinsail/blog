@@ -1,7 +1,12 @@
 title: Android-Handler消息处理机制
-date: 2019-05-10T14:26:47.112Z
-tags: [Android,Handler,消息处理机制]
-categories: [Android,Handler]
+tags:
+  - Android
+  - Handler
+  - 消息处理机制
+categories:
+  - Android
+  - Handler
+date: 2019-05-10 14:26:47
 ---
 ## UI线程
 - 每一个应用启动时，系统都会为其分配一个进程、一个主线程，默认情况下所有的组件、操作都在该线程下运行执行；
@@ -25,7 +30,9 @@ categories: [Android,Handler]
 
 > 注意：Hanlder仅作为Message的发送与接收者，真正处理Message的是Handler所在的线程，例如：当Activity+Handler导致Activity内存泄露时，引用链为Activity->Handler->UI线程，Activity因为被UI线程所持有而导致无法被回收；
 
+<!--
 ## Handler的使用
 ```
 
 ```
+-->

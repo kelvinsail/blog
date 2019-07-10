@@ -9,8 +9,7 @@ categories:
 author: yifan
 date: 2018-10-10 10:08:00
 ---
----
-#1、新建FTP账号
+# 1、新建FTP账号
 - 升级
 ```
 yum update  //升级软件，非必要
@@ -72,7 +71,7 @@ ForceCommand internal-sftp
 > Match Group sftp 匹配sftp用户组中的用户 
 ChrootDirectory %h 只能访问默认的用户目录(自己的目录)，例如 /home/test
 
-#2、配置FTP账号访问路径
+# 2、配置FTP账号访问路径
 ```
 chown root:sftp /home/【username 】
 chgrp -R sftp /home/【username 】
@@ -82,12 +81,12 @@ mkdir /home/【username 】/upload
 chown -R 【username 】:sftp /home/【username 】/upload
 chmod -R 755 /home/【username 】/upload
 ```
-#3、重启sshd服务
+# 3、重启sshd服务
 ```
 systemctl restart sshd
 ```
 
-#4、Nginx配置站点信息
+# 4、Nginx配置站点信息
 - 第一种，直接通过IP&端口访问
 ```
 server {

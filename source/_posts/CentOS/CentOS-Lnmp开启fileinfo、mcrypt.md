@@ -10,7 +10,6 @@ categories:
 author: yifan
 date: 2018-08-02 18:33:00
 ---
----
 # 一、开启fileinfo
 ## 1、进入lnmp安装文件夹根目录：`/root/lnmp1.5/src/`
 ## 2、解压php安装包：`tar -jxvf php-7.0.30.tar.bz2`

@@ -7,8 +7,7 @@ categories:
 author: yifan
 date: 2019-01-09 11:14:00
 ---
----
-##1、查看当前的并发数
+## 1、查看当前的并发数
 ```
 netstat -n | awk '/^tcp/ {++S[$NF]} END {for(a in S) print a, S[a]}'
 ```
@@ -39,7 +38,7 @@ LAST_ACK：等待所有分组死掉
 netstat -nat|grep ESTABLISHED|wc -l
 ```
 
-##2、消除未被及时释放的TIME_WAIT状态的TCP连接
+## 2、消除未被及时释放的TIME_WAIT状态的TCP连接
 
 如发现系统存在大量TIME_WAIT状态的连接，通过调整内核参数解决，
 

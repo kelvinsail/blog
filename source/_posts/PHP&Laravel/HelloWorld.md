@@ -8,9 +8,8 @@ categories:
 author: yifan
 date: 2018-02-07 16:57:00
 ---
----
-1、将所需的[URL](http://test.kelvinsail.com)解析地址指向本地虚拟机ip；
-2、创建Laravel新项目
+# 1、将所需的[URL](http://test.kelvinsail.com)解析地址指向本地虚拟机ip；
+# 2、创建Laravel新项目
 进入“/home/wwwroot/”目录下，通过：
 ```
 laravel new test.kelvinsail.com
@@ -97,7 +96,7 @@ chown -R www:www ./*
 chmod -R 755 ./*
 lnmp restart
 ```
-3、添加vhost
+# 3、添加vhost
 - 可以手动添加vhost，但要先确定nginx的路径；
 - 如果是lnmp环境，也可以通过lnmp直接添加：
 ```
@@ -168,6 +167,6 @@ server
 
 ![upload successful](/images/pasted-8.png)
 
-4、重新打开http://test.kelvinsail.com
+# 4、重新打开http://test.kelvinsail.com
 
 ![upload successful](/images/pasted-9.png)

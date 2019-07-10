@@ -8,23 +8,22 @@ categories:
 author: yifan
 date: 2018-08-05 10:36:00
 ---
----
-#安装JAVA 
+# 安装JAVA 
 
-####1、卸载原有openJDK
-####2、下载jdk rpm安装包
+## 1、卸载原有openJDK
+## 2、下载jdk rpm安装包
 http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 <!-- more -->
 ![upload successful](/images/pasted-43.png)
-####3、上传到服务端
-####4、更改文件权限并安装
+## 3、上传到服务端
+## 4、更改文件权限并安装
 ```
 chmod 777 jdk-8u181-linux-x64.rpm
 rpm -ivh jdk-8u181-linux-x64.rpm
 ```
 ![upload successful](/images/pasted-44.png)
 
-####5、添加环境变量
+## 5、添加环境变量
 用编辑器打开文件
 ```
 vi /etc/profile
@@ -37,29 +36,29 @@ export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
 export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
 ```
 
-####6、更新源文件
+## 6、更新源文件
 ```
 source /etc/profile
 ```
 
-####7、检查java环境
+## 7、检查java环境
 ![upload successful](/images/pasted-45.png)
-#安装haveged
-####1、检查是否需要安装haveged(<1000)
+# 安装haveged
+## 1、检查是否需要安装haveged(<1000)
 ```
 cat /proc/sys/kernel/random/entropy_avail
 ```
 
 ![upload successful](/images/pasted-46.png)
 
-####2、安装haveged
+## 2、安装haveged
 ```
 yum install epel-release -y
 yum install haveged -y
 ```
 ![upload successful](/images/pasted-47.png)
 
-####3、设置启动
+## 3、设置启动
 ```
 [root@localhost tomcat]# systemctl start haveged
 [root@localhost tomcat]# systemctl enable haveged 
@@ -82,18 +81,19 @@ Created symlink from /etc/systemd/system/multi-user.target.wants/haveged.service
 8月 04 10:05:53 localhost.localdomain haveged[1812]: haveged: fills: 0, generated: 0
 Hint: Some lines were ellipsized, use -l to show in full.
 ```
-####4、检查是否熵是否>1000
-![image.png](https://upload-images.jianshu.io/upload_images/3867295-03cb3fd5986862e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+## 4、检查是否熵是否>1000
 
-#安装TOMCAT
-####1、下载安装包
+![upload successful](/images/pasted-99.png)
+
+# 安装TOMCAT
+## 1、下载安装包
 https://tomcat.apache.org/download-80.cgi
-####2、解压到安装路径
+## 2、解压到安装路径
 ```
 mkdir /opt/tomcat
 sudo tar -zxvf apache-tomcat-8.0.50.tar.gz -C /opt/tomcat --strip-components=1
 ```
-####3、试运行tomcat
+## 3、试运行tomcat
 ```
 cd /opt/tomcat/bin
 ./startup.sh
@@ -133,17 +133,17 @@ sudo systemctl start tomcat.service
 sudo systemctl enable tomcat.service
 ```
 
-####4、开启防火墙
+## 4、开启防火墙
 ```
 sudo firewall-cmd --zone=public --permanent --add-port=8080/tcp
 sudo firewall-cmd --reload
 ```
 ![upload successful](/images/pasted-51.png)
-####5、访问http://IP:8080页面
+## 5、访问http://IP:8080页面
 
 ![upload successful](/images/pasted-50.png)
 
-####6、设置Tomcat管理员账号密码
+## 6、设置Tomcat管理员账号密码
 ```
 vi /opt/tomcat/conf/tomcat-users.xml
 ```
@@ -159,7 +159,7 @@ vi /opt/tomcat/conf/tomcat-users.xml
 <user username="root" password="hello12345" roles="admin-gui,admin,manager-gui,manager,manager-script,manager-jmx,manager-status"/>
 ```
 
-####7、取消IP限制
+## 7、取消IP限制
 ```
 vi /opt/tomcat/webapps/manager/META-INF/context.xml
 ```
@@ -167,13 +167,13 @@ vi /opt/tomcat/webapps/manager/META-INF/context.xml
          allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />】注释
 
 ![upload successful](/images/pasted-49.png)
-####8、访问管理页面
+## 8、访问管理页面
 
 ![upload successful](/images/pasted-48.png)
 
 
 
-#安装MySQL
+# 安装MySQL
 安装wget
 ```
 [root@localhost ~]# yum install wget

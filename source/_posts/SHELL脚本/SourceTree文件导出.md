@@ -8,7 +8,6 @@ categories:
 author: yifan
 date: 2017-12-01 17:51:00
 ---
----
 > 写了个Mac下SourceTree文件导出功能的shell脚本，用于自定义操作，可实现类似于TortoiseGit的导出文件功能
 
 1. 脚本内容

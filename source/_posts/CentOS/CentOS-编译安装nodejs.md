@@ -8,7 +8,6 @@ categories:
 author: yifan
 date: 2019-04-29 10:15:00
 ---
----
 # 访问`https://nodejs.org/dist/`查看最新版本
 这里以`v9.9.0`为例
 # 开始安装`v9.9.0`

@@ -10,7 +10,6 @@ categories:
 author: yifan
 date: 2019-04-26 16:48:00
 ---
----
 # 一、配置slave服务器
 
 ## 1、安装java

@@ -8,8 +8,8 @@ categories:
 author: yifan
 date: 2018-12-26 18:41:00
 ---
----
-##一、什么是Valet
+
+## 一、什么是Valet
 Valet是适用于Mac极简主义者的Laravel开发环境。不需要Vagrant, 也不用配置/etc/hosts。甚至可以使用本地隧道协议共享站点到外网。
 
 Laravel Valet将Mac配置为在机器启动时始终在后台运行[Nginx](https://www.nginx.com/)。然后，使用[DnsMasq](https://en.wikipedia.org/wiki/Dnsmasq)，Valet代理域上的所有请求以指向安装在本地计算机上的站点。
@@ -18,8 +18,8 @@ Laravel Valet将Mac配置为在机器启动时始终在后台运行[Nginx](https
 
 换句话说，Valet是一个超快的Laravel开发环境，使用大约7 MB的RAM。Valet不是Vagrant或Homestead的完全替代品，但如果只需要极简的环境、极佳的速度，或者在内存有限的设备上工作，它会是一个很好的选择。
 <!-- more -->
-##二、安装
-###1、更新 Homebrew 到最新版本
+## 二、安装
+### 1、更新 Homebrew 到最新版本
 ```
 update brew
 ```
@@ -28,7 +28,7 @@ update brew
 ```
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
-###2、安装Composer
+### 2、安装Composer
 ```
 brew services list
 brew install composer
@@ -38,12 +38,12 @@ brew install composer
 composer config -g repo.packagist composer https://packagist.phpcomposer.com
 ```
 此外，php版本最好为7.0+
-###3、开始安装
+### 3、开始安装
 运行
 ```
 composer global require laravel/valet 
 ```
-###4、更新配置
+### 4、更新配置
 ```
 vi ~/.bash_profile
 ```
@@ -53,7 +53,7 @@ echo 'export PATH=~/.composer/vendor/bin:$PATH' >> ~/.bash_profile
 source ~/.bash_profile
 ```
 
-###5、安装并启动Valet
+### 5、安装并启动Valet
 ```
  valet install 
 ```
@@ -76,7 +76,7 @@ In Brew.php line 182:
 ln -s /usr/local/opt/php71/bin/php /usr/local/bin/php
 ```
 再重新运行valet install
-###6、更改域名后缀为test
+### 6、更改域名后缀为test
 ```
 valet domain test
 ```

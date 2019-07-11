@@ -8,10 +8,9 @@ categories:
   - Http
 date: 2019-07-10 18:39:00
 ---
-# HTTP状态码
+# HTTP状态码(HTTP Status Code)
 当浏览者访问一个网页时，浏览者的浏览器会向网页所在服务器发出请求。当浏览器接收并显示网页前，此网页所在的服务器会返回一个包含HTTP状态码的信息头（server header）用以响应浏览器的请求。
 
-HTTP状态码的英文为HTTP Status Code。
 <!-- more -->
 
 # 常见的HTTP状态码：

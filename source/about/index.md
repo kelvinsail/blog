@@ -5,6 +5,8 @@ just a corder.
 
 
 
+<!--
+
 ### 5月知识整理清单
 
 - [x] Android+Handler消息处理机制
@@ -27,4 +29,5 @@ just a corder.
 
 - [] Android内存优化
 
-- [] 开源协议
+- [] 开源协议 
+-->

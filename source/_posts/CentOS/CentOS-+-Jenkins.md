@@ -9,7 +9,7 @@ categories:
 author: yifan
 date: 2018-09-14 15:04:00
 ---
- # 1. 安装JDK
+# 1. 安装JDK
 > 确认此前未安装过JDK，如果安装过先确认jdk不是gcj版本，否则Jenkins可能运行异常，需要卸载重装JDK；
 - 查看jdk版本 
 ```
@@ -98,11 +98,15 @@ cat /var/lib/jenkins/secrets/initialAdminPassword   //查看密码
 ![upload successful](/images/pasted-75.png)
 
 - Jenkins + Gitlab配置
-安装gitlab插件
-进入全局设置-配置gitlab链接
-进入centos生成ssh_key
-gitlab添加ssh_key
-jenkins新建任务、配置
+ - 安装gitlab插件
+ - 进入全局设置-配置gitlab链接
+ - 进入centos生成ssh_key
+ ```
+ cd ~/.ssh
+ ssh-keygen -t rsa -C "邮箱"
+ ```
+ - gitlab添加ssh_key
+ - jenkins新建任务、配置，添加token
 
 - Jenkins设置备份还原、迁移
 >可安装ThinBackup插件，备份后把备份文件夹复制到新服务器上，在新服务器的jenkins-ThinBackup中导入；

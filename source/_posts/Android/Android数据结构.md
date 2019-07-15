@@ -1,7 +1,11 @@
 title: Android 数据结构
 author: yifan
-date: 2019-07-14 21:02:28
 tags:
+  - Android
+  - 数据结构
+categories:
+  - Android
+date: 2019-07-14 21:02:00
 ---
 # 一、List接口
 - 特点

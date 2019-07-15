@@ -10,27 +10,163 @@ tags:
 - 创建该`Runnable`类的实例，并将该实例对象作为`Thread`类的`target`来创建`Thread`实例，该对象是线程真正的执行者；
 - 调用线程对象的`start()`方法来执行线程；
 <!-- more -->
+```
+    public void startThread() {
+        new Thread(new TestRun()).start();
+    }
+
+    private static class TestRun implements Runnable {
+        @Override
+        public void run() {
+            Log.e("TestRun", "run: strat");
+        }
+    }
+```
 ## 继承Thread
 - 定义`Thread`的子类，并重写该类的`run()`方法，该方法将作为线程的执行体，处理真正的任务；
 - 创建`Thread`实例对象，调用线程对象的`start()`方法来执行线程；
+```
+    public void startThread() {
+        new TestThread().start();
+    }
+
+    private static class TestThread extends Thread {
+
+        @Override
+        public void run() {
+            super.run();
+            Log.e(TestThread.class.getName(), "run: strat");
+        }
+    }
+```
 
 ## FutureTask+Callable
 - 创建`Callable`接口的实现类，并重写`call()`方法，该方法将作为线程的执行体，并且具有返回值；
 - 创建`Callable`实现类的实例，并使用`FutureTask`类来包装`Callable`对象并实例化，该`FutureTask`对象封装了`Callable`对象的`call()`方法的返回值；
 - 使用该`FutureTask`对象作为`Thread`的`target`来创建线程实例并启动；
 - 调用`FutureTask`的`get()`方法来获取执行结果的返回值，该方法会自动阻塞直到线程执行完毕；
+```
+    public void startThread() {
+		FutureTask task = new FutureTask<String>(new TestCall());
+        new Thread(task).start();
 
+        try {
+            Log.i("TestCall", "FutureTask: " + task.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	private static class TestCall implements Callable<String> {
+
+        @Override
+        public String call() throws Exception {
+            return "run: completed !";
+        }
+    }
+```
 ## AsyncTask
 > 实质上是`FutureTask`及线程池的封装类，其中封装了两个线程池，一个是串行，一个为并行；
 - 创建`AsyncTask`的子类，并重写其中的`doInBackground()`方法，该方法将作为线程的执行体；
 - 调用`AsyncTask`实例的`excute()`方法，启动线程；
 
+```
+    public void startThread() {
+        new TestAsyncTask().execute();
+    }
+	
+    private static class TestAsyncTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.i(TestAsyncTask.class.getName(), "onPreExecute: before start");
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return "success";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.i(TestAsyncTask.class.getName(), "onPostExecute: " + result);
+        }
+    }
+```
+
 ## IntentService
 > Service的子类，封装了Loop+Handler，可作为处理异步任务使用的Service类；其中通过`startService(intent)`方式启动，同个IntentService传入多个intent，会依照传入顺序依次执行任务，执行完毕之后会自动结束Service，无需调用`stopSelf`；
 - 创建`IntentService`的子类，并重写构造函数、`onHandleIntent()`函数，并在`onHandleIntent()`中实现耗时操作；
-- 通过`startService(intent)`启动线程；
+- 注册IntentService子类，`<service android:name=".TestIntentService"/>`
+- 调用`startService(intent)`启动线程；
 
-# 线程池
+```
+    public void startThread() {
+        Intent intent = new Intent(this,TestIntentService.class);
+        startService(intent);
+    }
+
+    public class TestIntentService extends IntentService {
+
+        public TestIntentService() {
+            super("TestIntentService");
+        }
+		
+        public TestIntentService(String name) {
+            super("TestIntentService");
+        }
+
+        @Override
+        public void onStart(@Nullable Intent intent, int startId) {
+            super.onStart(intent, startId);
+            Log.i(TestIntentService.class.getName(), "onStart: ");
+        }
+
+        @Override
+        protected void onHandleIntent(@Nullable Intent intent) {
+            Log.i(TestIntentService.class.getName(), "onHandleIntent: ");
+        }
+
+        @Nullable
+        @Override
+        public IBinder onBind(Intent intent) {
+            Log.i(TestIntentService.class.getName(), "onBind: ");
+            return super.onBind(intent);
+        }
+
+        @Override
+        public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+            Log.i(TestIntentService.class.getName(), "onStartCommand: ");
+            return super.onStartCommand(intent, flags, startId);
+        }
+
+        @Override
+        public void onCreate() {
+            super.onCreate();
+            Log.i(TestIntentService.class.getName(), "onCreate: ");
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            Log.i(TestIntentService.class.getName(), "onDestroy: ");
+        }
+    }
+```
+
+- 执行后输出结果如下
+```
+onCreate: 
+onStartCommand: 
+onStart: 
+onHandleIntent: 
+onDestroy: 
+```
+
+# 常见线程池
 ## CacheThreadPool
 > 一个缓存线程池，加入新任务时，如果缓存线程池中有可复用的闲置线程，则取出进行复用，如果没有线程可以复用，则创建一个新的线程来执行任务并加入线程池里；而当线程池中有线程闲置超过60s，会被终止并移除，所长时间闲置的缓存线程池不会耗费多余资源；
 
@@ -48,7 +184,7 @@ tags:
 ## Thread.interrupt()
 ## AsyncTask.cancel()
 
-# 线程同步
+# 线程同步（执行控制&内存可见性）
 ## Synchronized
 - 对象锁
 > 1） 当两个或者多个并发线程同时访问一个object中的synchronized(this)同步代码块时，一个时间内只能有一个线程得到执行，其他线程必须要等到当前线程执行完这个代码块之后才能继续执行该代码块。
@@ -59,6 +195,9 @@ tags:
 - 
 
 ## Volatie
+- 作用于变量，仅能保证基本类型的单次读写操作的原子性，不能保证复杂操作（例如i++）的原子性；
+- 实现原理为内存屏障；
+- 适用于一写多读的情况；
 
 ## 区别
 - volatile仅能使用在变量级别；  synchronized则可以使用在变量、方法、和类级别；

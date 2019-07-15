@@ -16,6 +16,7 @@ Object ojb = new Object();
 - 特点
  - 直接访问对象，但某些情况可能引起内存泄漏；
  - 当对象被强引用所关联时，JVM不会回收该对象，即使内存不足的情况下，JVM会直接抛出OutOfMemory错误1而不会回收该类对象；
+<!-- more -->
 
 ## 软引用（SoftReference）
 - 使用
@@ -25,6 +26,7 @@ SoftReference reference = new SoftReference<Object>(obj);
 ```
 - 特点
  - 用来关联有作用但不是必要的对象，只有在内存不足的时候JVM才会回收该对象;
+ - 适合用于数据缓存，可以保证数据的引用也能保证在内存不足情况下进行释放；
 
 ## 弱引用（WeakReference）
 - 使用
@@ -33,7 +35,8 @@ Object obj =new Object();
 WeakReference reference = new WeakReference<Object>(obj);
 ```
 - 特点
-> 用来关联非必要对象，当JVM进行垃圾回收时，无论内存是否充足，都会回收被弱引用关联的对象;
+ -  用来关联非必要对象，当JVM进行垃圾回收时，无论内存是否充足，都会回收被弱引用关联的对象;
+ - 适合用于优化匿名内部类、防止内存泄漏，例如：Handler
 
 ## 虚引用（PhantomReference）
 - 使用

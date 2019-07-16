@@ -1,7 +1,11 @@
 title: 关于我.
 date: 2019-05-08 22:59:21
 ---
-just a corder.
+just a Corder.
+
+用以记录、自省
+
+暂未安装评论插件，如发现错漏可以邮件（kelvinsail@163.com）
 
 
 

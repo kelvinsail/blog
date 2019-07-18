@@ -119,3 +119,13 @@ date: 2019-07-14 21:02:00
 - 1）基于红黑树的SortedMap接口实现类；
 - 2）非线程安全；
 - 3）作为TreeSet的底层数据结构；
+
+
+# 安全类
+## ConcurrentHashMap
+- 分段锁
+- 具体实现根据jdk版本而定
+## CopyOnWriteArrayList
+
+# 其他
+## Collections.synchronizedList原理

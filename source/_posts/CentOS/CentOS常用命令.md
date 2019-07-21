@@ -1,12 +1,15 @@
+---
 title: CentOS常用命令
-author: yifan
 tags:
   - CentOS
   - CentOS命令
 categories:
   - CentOS
+toc: false
+author: yifan
 date: 2019-05-17 10:17:00
 ---
+
 # 系统
 ## 查看系统版本
 ```
@@ -122,6 +125,7 @@ top
 ```
 top -u mysql
 ```
+
 ### 按进程pid查看
 ```
 pidof mysqld
@@ -129,8 +133,13 @@ pidof mysqld
 top -p 5310 //按进程pid查看
 top -p 5310,5311,5312 //多个进程pid以','隔开
 ```
-###  杀死进程
 
+### 查看端口占用情况
+```
+lsof -i tcp:80
+```
+
+###  杀死进程
 #### kill（杀死进程）
 ```
 kill 信号 pid

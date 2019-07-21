@@ -1,12 +1,16 @@
+---
 title: Android 数据结构
-author: yifan
 tags:
   - Android
   - 数据结构
 categories:
   - Android
+toc: false
+author: yifan
 date: 2019-07-14 21:02:00
 ---
+
+![image.png](/images/2019/07/21/da83b1e0-abcd-11e9-b49b-5567542b1d54.png)
 # 一、List接口
 - 特点
  - 继承Collection接口，元素时有序的，具有列表的功能，元素顺序均是按照添加的先后顺序进行排列的，不管访问多少次，元素位置不变；
@@ -144,7 +148,7 @@ private int[] mKeys;
 private Object[] mValues;
 ```
  - key必须是int类型，但避免了自动装箱转换成Integer
-- 二分法查找数据、大数据集合下性能降低
+- 二分法定位、查找数据，一般情况下具有较好的性能，但大数据集合下性能降低
 
 ## 2、Collections实现同步
 

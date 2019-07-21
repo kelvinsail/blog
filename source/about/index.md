@@ -19,13 +19,13 @@ just a Corder.
 
 - [x] Activity启动模式
 
-- [] Android动画
+- [x] Android动画
 
 - [] Android+Fragment生命周期
 
-- [] Android常见数据结构
+- [x] Android常见数据结构
 
-- [] Android多线程的使用
+- [x] Android多线程的使用
 
 - [] Android发布开源库到JCenter
 

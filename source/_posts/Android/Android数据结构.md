@@ -121,11 +121,35 @@ date: 2019-07-14 21:02:00
 - 3）作为TreeSet的底层数据结构；
 
 
-# 安全类
-## ConcurrentHashMap
-- 分段锁
-- 具体实现根据jdk版本而定
-## CopyOnWriteArrayList
+# 四、安全类
 
-# 其他
-## Collections.synchronizedList原理
+## 1、ConcurrentHashMap
+- 替代HashMap的线程安全实现类
+- 以分段锁实现线程安全
+- 具体实现根据jdk版本而定
+
+## 2、CopyOnWriteArrayList
+- 替代ArrayList的线程安全实现类
+
+# 五、其他
+
+## 1、SparseArray
+
+- 键值对集合
+- 初始大小为10
+- 数据存储
+ - 通过两个数组分开存放key、value
+```
+private int[] mKeys;
+private Object[] mValues;
+```
+ - key必须是int类型，但避免了自动装箱转换成Integer
+- 二分法查找数据、大数据集合下性能降低
+
+## 2、Collections实现同步
+
+- 原理（以synchronizedMap为例）
+ - 创建并返回一个SynchronizedMap，即HashMap的包装类
+ - SynchronizedMap中各个函数通过synchronized代码块实现线程安全；
+ - Collections中的其他同步方法实现原理基本一致；
+ - 但SynchronizedMap效率比安全类ConcurrentHashMap差，因为ConcurrentHashMap内部是分段锁形式实现的，最小单位是桶，每个桶之间的线程安全互不干扰；

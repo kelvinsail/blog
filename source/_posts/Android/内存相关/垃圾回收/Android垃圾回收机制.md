@@ -52,8 +52,16 @@ PhantomReference reference = new PhantomReference<Object>(obj,referenceQueue);
 
 # 垃圾回收
 ## 定义垃圾
-- 引用计数（无法解决循环引用问题）
+- 引用计数
+ - 在对象的头部维护一个引用计数器counter，如果新增一个与其相连的引用关系，则counter++；与之相连的一个引用关系失效，则counter--；如果counter为0，则该对象没有任何与之关联的引用，可被回收；
+ - 但无法解决循环引用问题，如果A、B两个对象互相持有引用，则counter永远不为0；
 - 可达性
+ - 以可作为GC Roots的对象为起始点，从起始点往下搜索，所经过的路径称为引用链(Reference Chain)，当一个对象与GC Root之间没有任何引用链相关联，则该对象为不可达；
+> 可作为GC Root的对象有
+> - 虚拟机栈(栈桢中的本地变量表)中的引用的对象
+> - 方法区中的类静态属性引用的对象
+> - 方法区中的常量引用的对象
+> - 本地方法栈中JNI（Native方法）的引用的对象
 
 ## 回收方法
 - 标记-清除法：减少停顿时间，但会造成内存碎片；
@@ -70,3 +78,13 @@ PhantomReference reference = new PhantomReference<Object>(obj,referenceQueue);
  - Major GC发生在年老代；
 - 永久代
  - 存放Java本身的一些数据，当类不在使用时也会被回收
+ 
+# 内存泄漏
+## 常见的内存泄漏
+- 错误使用静态内部类
+ - 比如：Handler，引用链：Activity->Handler->Message->MessageQueue->UIThread
+- Bitmap、Cursor、File、Stream等使用之后没有关闭
+- WebView
+- 被生命周期更长的对象引用
+ - 比如：Application中的创建HashMap存放Activity对象，但没有及时移除；
+ - 单例引用，传入Activity作为Context

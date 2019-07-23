@@ -5,6 +5,7 @@ tags:
 categories:
   - Android
 toc: false
+date: 2019-07-22 09:50:55
 ---
 
 # DataBinding
@@ -13,7 +14,7 @@ toc: false
 - 不仅仅是MVVM，它可用于任何希望数据与UI抽离解耦的地方，比如：
  - RecyelerView的Holder；
  - Glide加载图片；
-
+<!-- more -->
 # 实现
 ## ViewModel类
 - 开启app/build.gradle中的DataBinding设置
@@ -77,4 +78,4 @@ android {
  - notifyPropertyChanged(int fieldId) 
 - `callback`实际上被储存在`BaseObservable`的`PropertyChangeRegistry`对象中，以ArrayList储存;
  - `PropertyChangeRegistry`对象通过`transient`关键字，防止序列化/反序列化；
- - `PropertyChangeRegistry`继承`CallbackRegistry`，<span style='color:red'>各个函数通过`synchronized`加锁，所以线程安全</span>；
+ - `PropertyChangeRegistry`继承`CallbackRegistry`，<span style="color:red">各个函数通过`synchronized`加锁，所以线程安全</span>

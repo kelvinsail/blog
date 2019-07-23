@@ -1,15 +1,15 @@
+---
 title: Mac 双击执行shell
-author: yifan
 tags:
   - Mac
   - Shell
   - 双击执行Shell
 categories:
   - Mac
-  - ''
   - Shell
-  - ''
-date: 2019-07-21 10:59:00
+toc: false
+author: yifan
+date: 2019-07-20 04:59:00
 ---
 
 - 1）创建shell脚本
@@ -26,7 +26,9 @@ vim hello.sh
 echo 'hello mac shell'
 ```
 <!-- more -->
+
 - 3）设置权限
+
 ```
 chmod a+x hello.sh
 ```

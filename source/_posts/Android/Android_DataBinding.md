@@ -260,8 +260,9 @@ android:text="@{@plurals/orange(orangeCount, orangeCount)}"
             android:onCheckedChanged="@{(cb,isChecked)->viewModel.onChecked(cb,isChecked)}"/>
 ```
 ## 10、上下文
-- 默认提供了名为`context`的变量来支持上下文`context`对象传递，该`context`对象实为根布局元素`getContext()`所获的Avtivity对象，<span style="color:red">注意：只是传参而不是调用</span>
+- 默认提供了名为`context`的变量来支持上下文`context`的直接使用，该`context`对象来自于根布局元素`getContext()`
 ```
+android:text="@{context.getApplicationContext().toString()}"
 android:onCheckedChanged="@{()->viewModel.onChecked(context)}"
 ```
 
@@ -339,7 +340,22 @@ public class Presenter {
 ```
 - 在上述的代码中，没有定义原本回调函数的view变量作为参数，databindng中监听绑定可以选择忽略原有参数，如果需要也可以对原有<span style="color:red">所有参数</span>进行声明，写成“@{(view) -> presenter.onSaveClick(view, task)}”
 
-# 六、使用静态类
+# 六、使用静态类方法
+- import相应的类之后，就可以在布局文件中直接使用
+```
+    <data>
+        <import type="android.text.TextUtils" />
+        <variable
+            name="viewModel"
+            type="com.example.databindingtest.MainViewModel" />
+    </data>
+
+   <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{TextUtils.isEmpty(viewModel.text)?`text is null`:viewModel.text}" />
+```
 
 
 > 参考文档链接：

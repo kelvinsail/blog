@@ -1,7 +1,12 @@
 title: Android设计模式（未完成）
 author: yifan
-date: 2019-07-12 21:02:28
 tags:
+  - Android
+  - 设计模式
+categories:
+  - Android
+  - 设计模式
+date: 2019-07-12 21:02:00
 ---
 # 1. 创建类
 ## 1）单例模式

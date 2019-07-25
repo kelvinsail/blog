@@ -1,15 +1,17 @@
+---
 title: Android 单例模式
-author: yifan
 tags:
   - Android
   - 设计模式
   - 单例模式
 categories:
   - Android
-  - ''
   - 设计模式
+toc: false
+author: yifan
 date: 2019-07-20 20:54:00
 ---
+
 # 单例模式
 
 ## 一、特点
@@ -188,6 +190,16 @@ public enum Singleton implements SingletonImpl {
  - ActivityManagerService[context.getSystemService(Context.ACTIVITY_SERVICE)]
  - LayoutInflater[context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)]
 - Context中的LayoutInflater等服务（实例化之后以HashMap容器方式实现单例，并缓存起来）
+
+## 六、
+- 优点
+ - 在内存中有且只有一个实例，所以避免对象的重复创建，节省内存开支；
+ - 如果是一个创建时需要读取配置、获取较多资源的对象时，还能节省开销，避免对资源的多重访问；
+ - 可以作为全局资源或设置的访问点，优化和共享资源访问；
+- 缺点
+ - 一般没有接口，所以不方便扩展，维护难度大；
+ - 生命周期长、容易引起内存泄漏，传递上下文作为参数时需要注意，最好以Application作为context；
+
 
 <!-- 
 静态内部类的优点是：外部类加载时并不需要立即加载内部类，内部类不被加载则不去初始化INSTANCE，故而不占内存。即当SingleTon第一次被加载时，并不需要去加载SingleTonHoler，只有当getInstance()方法第一次被调用时，才会去初始化INSTANCE,第一次调用getInstance()方法会导致虚拟机加载SingleTonHoler类，这种方法不仅能确保线程安全，也能保证单例的唯一性，同时也延迟了单例的实例化。

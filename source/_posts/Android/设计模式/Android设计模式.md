@@ -1,13 +1,16 @@
+---
 title: Android设计模式（未完成）
-author: yifan
 tags:
   - Android
   - 设计模式
 categories:
   - Android
   - 设计模式
+toc: false
+author: yifan
 date: 2019-07-12 21:02:00
 ---
+
 # 1. 创建类
 ## 1）单例模式
 - 特点
@@ -31,15 +34,14 @@ date: 2019-07-12 21:02:00
 
 
 ## 3）创建者模式
-### 定义
+- 定义
 > 将一个复杂对象的创建与表示分离，使得同样的构建过程可以创建不同的表示；
-### 适用场景
-> 
-> 1、相同的方法、不同的执行顺序，会产生不用的事件结果；
-> 2、多个部件或零件，可以装配到同一个对象中时，可以产生不同的运行结果；
-> 3、产品类非常复杂，或产品类中的调用顺序不同产生了不同的作用；
-> 4、当初始化一个对象非常复杂，参数很多，每一个位置的参数都有多个可选时；
->
+- 适用场景
+ - 相同的方法、不同的执行顺序，可能会产生不用的事件结果；
+ - 多个部件或零件，可以装配到同一个对象中时，可能产生不同的运行结果；
+ - 产品类非常复杂，或产品类中的调用顺序不同产生了不同的作用；
+ - 当初始化一个对象非常复杂，参数很多，每一个位置的参数都有多个可选时；
+
 > 理解上与算术公式很像，当公式中，只存在加减乘除的一种，那无论进行多少遍操作，参数前后替换，结果依旧不变，这时候就不适用创建者模式；
 >
 > 但是当公式中可以同时存在加减乘除的任意组合时，前后操作、参数的变换都可能导致产生不同的结果，这时候就满足第1、2点条件，但是只有加减乘除的算术操作复杂程度仍达不到使用创建者模式的程度，创建者模式再怎样封装，都显得多余，还不如原来的公式简单易懂；
@@ -49,16 +51,127 @@ date: 2019-07-12 21:02:00
 > 最终，对外隐藏实现过程的具体计算细节，将实现与表示分离开来，通过符号表示该类计算的含义，所以当看到公式时，会知道所代表的复杂计算过程及最终得到结果的含义；
 
 ### 实现方式
+- 创建一个抽象类Computer，定义参数存放类Params，参考了AlertDialog的写法
 ```
-public abstract class Computer{
+public abstract class Computer {
 
-  public Computer(){}
+    private Pramas mParmas;
 
-  public void setBoard(String board){
+    public Computer() {
+        mParmas = new Pramas();
+    }
 
-  }
+    public void setBoard(String board) {
+        mParmas.board = board;
+    }
+
+    public void setCpu(String cpu) {
+        mParmas.cpu = cpu;
+    }
+
+    public void setMemory(String memory) {
+        mParmas.memory = memory;
+    }
+
+    @Override
+    public String toString() {
+        return getConfigure(Computer.class.getSimpleName());
+    }
+
+    public String getConfigure(String model) {
+        return new StringBuilder("[").append(model)
+                .append(" , board: ").append(mParmas.board)
+                .append(" , cpu: ").append(mParmas.cpu)
+                .append(" , memory: ").append(mParmas.memory)
+                .append("]").toString();
+    }
+
+    /**
+     * Computer类参数实际存放的类
+     */
+    public static class Pramas {
+
+        public String board;
+        public String cpu;
+        public String memory;
+
+        /**
+         * 应用参数设置，参考了AlertDialog的写法
+         *
+         * @param computer
+         */
+        public void apply(Computer computer) {
+            if (null != board) {
+                computer.setBoard(board);
+            }
+
+            if (null != cpu) {
+                computer.setCpu(cpu);
+            }
+
+            if (null != memory) {
+                computer.setMemory(memory);
+            }
+        }
+
+    }
 
 }
+```
+- 创建实际产品类MacBook，隐藏构造函数，避免外部初始化实例；
+ - 实现一个静态内部类Builder，即创建者；
+ - 创建者的函数使用链式调用，即setter函数都返回自身Builder对象；
+```
+public class MacBook extends Computer {
+
+    private static final String TAG = "MacBook";
+
+    protected MacBook() {
+        Log.i(TAG, "MacBook: ");
+    }
+
+    @Override
+    public String toString() {
+        return getConfigure(MacBook.class.getSimpleName());
+    }
+
+    public static class Builder {
+
+        Computer.Pramas params = new Computer.Pramas();
+
+        public Builder() {
+        }
+
+        public Builder setBoard(String board) {
+            params.board = board;
+            return this;
+        }
+
+        public Builder setCpu(String cpu) {
+            params.cpu = cpu;
+            return this;
+        }
+
+        public Builder setMemory(String memory) {
+            params.memory = memory;
+            return this;
+        }
+
+        public MacBook create() {
+            MacBook macbook = new MacBook();
+            params.apply(macbook);
+            return macbook;
+        }
+    }
+}
+```
+- 使用
+```
+MacBook macBook = new MacBook.Builder()
+        .setBoard("Apple")
+        .setCpu("INTEL i7")
+        .setMemory("16G")
+        .create();
 ```
 
 ## 4）原型模式

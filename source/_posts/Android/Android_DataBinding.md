@@ -63,18 +63,18 @@ android {
 </layout>
 ```
 
-- data标签元素作用
- - variable：声明对象并将其作为一个变量，可以在xml布局文件中使用；
- - import：引入一个类，可以方便的使用其中定义的静态方法；
- - class
- - alias：指定一个别名，以防止多个类名冲突；
- - include：
-- 自动布局属性
-
+- 相关的标签元素或属性
+ - variable：标签，声明对象并将其作为一个变量，可以在xml布局文件中使用；
+ - import：标签，引入一个类，可以方便的使用其中定义的静态方法（java.lang.*已默认添加引用）；
+ - class：属性，用于data标签中，指定布局文件自动生成的`ViewDataBinding`文件的名称；
+ - alias：属性，指定一个别名，以防止多个类名冲突；
+ - include：标签，包含一个外部布局，相应的ViewModel类需要进行传递才能才include的布局中使用；
+ - merge：标签，不支持布局中直接包含单个merge标签；
 
 - 在布局中的适当位置使用 单向`@{}` 或 双向`@={}`，引用绑定的变量
  - 单向`@{}`：即数据源更改时，通知视图进行刷新；
  - 双向`@={}`：即数据改变时会通知视图刷新，视图刷新变更时也会通知数据更改；
+   <span style="color:red">双向绑定时注意做变量相等判断，防止造成死循环</span>
 ```
     <TextView
         android:layout_width="match_parent"
@@ -102,13 +102,14 @@ android {
 # 三、驱动方式
 ## 1、BaseObservable
 - ViewDataBinding
- - ViewDataBinding继承BaseObservable，BaseObservable实际上又是Observable的实现类
+ - 自动生成ViewDataBinding类继承BaseObservable，BaseObservable实际上又是Observable的实现类
  - BaseObservable中实现了订阅、取消订阅、通知刷新四个函数，并<span style='color:red'>通过`synchronized(this)`以类锁的方式实现线程安全</span>；
 - 在代码中通过`ViewDataBinding`提供的方法添加、删除订阅，或通知刷新（）
  - addOnPropertyChangedCallback(@NonNull OnPropertyChangedCallback callback)
  - removeOnPropertyChangedCallback(@NonNull OnPropertyChangedCallback callback)
  - notifyChange()
  - notifyPropertyChanged(int fieldId) 
+ > <span style="color:red">fieldId来自BR类定义的变量，make module之后自动生成；</span>
 - `callback`实际上被储存在`BaseObservable`的`PropertyChangeRegistry`对象中，以ArrayList储存;
  - `PropertyChangeRegistry`对象通过`transient`关键字，防止序列化/反序列化；
  - `PropertyChangeRegistry`继承`CallbackRegistry`，<span style="color:red">各个函数通过`synchronized`加锁，所以线程安全</span>
@@ -135,23 +136,24 @@ android {
 
 # 四、表达式
 ## 1、基础运算符
-- 算术符号：+ - / * %
-- 字符串合并： +
-- 逻辑运算符 && ||
-- 二元运算符 & | ^
-- 一元运算符 + - ! ~
-- 移位运算符 >> >>> <<
-- 比较 == > < >= <= (符号“<”需要写成“&lt;”)
-- 类型判断：instanceof
-- Grouping ()
-- Literals - character, String, numeric, null
-- 强制转换
-- 方法调用
-- 变量访问
-- 数组访问 []
-- 三元运算符 ?:
+- 支持的符号、操作，以及数据类型
+ - 算术符号：+ - / * %
+ - 字符串合并： +
+ - 逻辑运算符 && ||
+ - 二元运算符 & | ^
+ - 一元运算符 + - ! ~
+ - 移位运算符 >> >>> <<
+ - 比较 == > < >= <= (符号“<”需要写成“&lt;”)
+ - 类型判断：instanceof
+ - Grouping ()
+ - 文本字符, 字符串, 数字, null
+ - 强制转换
+ - 方法调用
+ - 变量访问
+ - 数组访问 []
+ - 三元运算符 ?:
 
-## 2、不支持的操作
+## 2、不支持的符号或操作
 - this
 - super
 - new
@@ -266,12 +268,12 @@ android:text="@{context.getApplicationContext().toString()}"
 android:onCheckedChanged="@{()->viewModel.onChecked(context)}"
 ```
 
-
 # 五、事件绑定
 > 常见的事件例如`onClick()`点击事件，可以在代码中动态绑定一个`View.OnClickListener`，也通过xml布局文件中控件的事件绑定属性`android:onClick`与方法进行关联，DataBinding也支持该类事件绑定属性的使用；
 > 方式有两种：
 > - 方法调用
 > - 绑定监听
+> <span style="color:red">注意：作为绑定回调事件的函数，混淆规则要进行排除，防止混淆之后DataBinding框架无法根据函数名找到回调函数<span>
 
 ## 1、方法引用
 - 创建点击事件处理类
@@ -357,6 +359,97 @@ public class Presenter {
         android:text="@{TextUtils.isEmpty(viewModel.text)?`text is null`:viewModel.text}" />
 ```
 
+# 七、inclue 与 ViewStub
+# 八、绑定适配
+## 1、属性自动选择
+- 支持View控件的自定义属性与setter方法之间的自动关联；
+ - 如果xml中定义的属性为example，库会自动尝试查找setExample(arg)接受兼容类型作为参数的方法；
+ - 假如arg为已定义的String字符串，则会寻找setExample(String arg)，如果为int，则是寻找setExample(int arg)；
+ - 如果arg为ViewModel提供类型，如`user.name`，则会先获取`user.getName()`返回对象以确定类型；
+ - 不考虑属性的名称空间，搜索方法时仅使用属性名称和类型；
+- View中定义了相应的setter函数，并`make module`（或根据View中已有的setter函数，定义xml属性）；
+```
+public class CustomTextView extends TextView {
 
-> 参考文档链接：
-> [https://developer.android.com/topic/libraries/data-binding](https://developer.android.com/topic/libraries/data-binding)
+    private static final String TAG = "CustomTextView";
+
+    private String name;
+
+    public CustomTextView(Context context) {
+        super(context);
+    }
+
+    public CustomTextView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+- 可以在布局中直接使用app命名空间来设置对应的属性（Android Studio不会自动补全属性名称）；
+```
+<com.example.databindingtest.design.builder.CustomTextView
+  android:id="@+id/tv"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  app:name="@{`yifan`}" />
+```
+## 2、指定属性方法
+- 如果遇到属性与setter函数名称无法统一的情况，还可以使用`BindingMethods`注解来指定接收事件的函数；也是作为一种布局自定义属性接收函数的功能，所以需要在自定义控件中添加注解、事件接收函数；
+- 自定义控件，以`CustomImageView`为例；
+- 在头部添加注解`@BindingMethods`集合，定义需要声明的属性函数指定关系`@BindingMethod`
+ - 每一个声明都需要三个属性(type:使用的类，attribute：xml布局文件中定义的属性，method：自定义布局中的接收函数名）
+```
+@BindingMethods({
+        @BindingMethod(type = android.widget.ImageView.class, attribute = "loadimage", method = "loadImage"),
+})
+@SuppressLint("AppCompatCustomView")
+public class CustomImageView extends ImageView {
+
+    public CustomImageView(Context context) {
+        super(context);
+    }
+
+    public CustomImageView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public CustomImageView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public void loadImage(String url) {
+        Glide.with(this.getContext()).load(url).into(this);
+    }
+}
+```
+- 布局中添加自定义属性
+```
+        <com.example.databindingtest.CustomImageView
+            android:id="@+id/iv_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:loadimage="@{viewModel.img}" />
+```
+
+## 3、自定义逻辑
+
+# 九、绑定转换
+## 1、自动转换
+## 2、自定义转换
+
+
+
+
+# 参考文档链接
+> - [android开发者文档](https://developer.android.com/topic/libraries/data-binding)
+> - [Android DataBinding 从入门到进阶](https://juejin.im/post/5b02cf8c6fb9a07aa632146d#heading-15)
+> - [DataBinding使用教程（四）：BaseObservable与双向绑定](https://juejin.im/entry/59b628c66fb9a00a514368f8)
+> - [DataBinding最全使用说明](https://juejin.im/post/5a55ecb6f265da3e4d7298e9#heading-17)

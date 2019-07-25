@@ -25,6 +25,47 @@ date: 2019-07-22 10:45:14
 |× 乘号|&times；|&#215；|
 |÷ 除号|&divide；|&#247；|
 
+# Android9 适配
+## 1、网络
+### 提示
+- 方法一：添加网络安全配置
+ - 创建配置文件`res/xml/network_security_config.xml`
+```
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">Your URL(ex: 127.0.0.1)</domain>
+    </domain-config>
+</network-security-config>
+```
+ - AndroidManifest.xml设定安全配置文件路径
+ ```
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest ...>
+     <uses-permission android:name="android.permission.INTERNET" />
+     <application
+         ...
+         android:networkSecurityConfig="@xml/network_security_config"
+         ...>
+         ...
+     </application>
+ </manifest>
+ ```
+
+- 方法二、关闭网络安全限制
+ - AndroidManifest.xml添加`android:usesCleartextTraffic`
+ ```
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest ...>
+     <uses-permission android:name="android.permission.INTERNET" />
+     <application
+         ...
+         android:usesCleartextTraffic="true"
+         ...>
+         ...
+     </application>
+ </manifest>
+ ```
 
 # 配置问题
 ## 1、提示“License for package Android SDK Build-Tools 28.0.2 not accepted.”
@@ -35,4 +76,3 @@ cd ~/Library/Android/sdk/tools/bin
 
 ```
 - 根据提示，输入y
-

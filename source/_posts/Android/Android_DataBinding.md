@@ -589,7 +589,7 @@ public static ColorDrawable convertColorToDrawable(int color) {
 > - 定义之后，函数会对xml布局文件<span style="color:red">所有</span>`@{}`中定义的符合所绑定类型的对象做处理；
 > - 在同个属性中通过三元表达式判断之后返回的两个对象类型应当统一，不能使用不同的类型，例如：`android:background="@{isError ? @drawable/error : @color/white}"`
 
-# 十、Inverse（反转）
+# 十、Inverse（反向绑定）
 ## 1、InverseMethod
 > 针对布局中model定义的数据类型与视图所展示的类型不一致时，通过`@ InverseMethod`注解标记的函数来统一两者之间的转换；例如：性别属性，在数据中经常以int类型标记，0、1、2，视图中表示为默认、男、女。
 ```

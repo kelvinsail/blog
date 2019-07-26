@@ -16,8 +16,9 @@ date: 2019-07-21 03:50:55
 - 不仅仅是MVVM，它可用于任何希望数据与UI抽离解耦的地方，比如：
  - RecyelerView的Holder；
  - 优化Glide加载图片；
-- 虽然解耦，但对xml布局文件有侵入式修改，编译器会对相应的标签进行处理成LayoutInflater可识别的形式，所以定义之后代码中也可以不使用；
-- 关系示例图，DataBinding实现MVVM
+- 虽然解耦，但对xml布局文件有侵入式修改，对布局文件复用有一定的影响，编译器会对相应的标签进行处理成LayoutInflater可识别的形式，所以定义之后代码中也可以不使用；
+- `@{}`布局中的表达式除了简单判断、转换之外，不应该做复杂的代码实现；
+- 官方关系示例图，MVVM中的DataBinding
 ![DataBinding实现MVVM](/images/2019/07/24/ba0d6380-adbb-11e9-ba13-ed3d05d432af.png)
 
 <!-- more -->
@@ -43,6 +44,7 @@ android {
  - 如果变量为私有，则需要在get/is方法加上注解`@Bindable`
  - 如果变量为共有public，则可以直接在变量上注解`@Bindable`
 - 在set方法中的适当位置调用notify相关函数
+
 ## 3、布局文件
 - 创建布局文件，并声明要引入的ViewModel类，注意：
  - 以`layout`为根元素，有且只有一个`data`标签；
@@ -68,7 +70,8 @@ android {
  - import：标签，引入一个类，可以方便的使用其中定义的静态方法（java.lang.*已默认添加引用）；
  - class：属性，用于data标签中，指定布局文件自动生成的`ViewDataBinding`文件的名称；
  - alias：属性，指定一个别名，以防止多个类名冲突；
- - include：标签，包含一个外部布局，相应的ViewModel类需要进行传递才能才include的布局中使用；
+ - include：标签，包含一个外部布局，相应的ViewModel类需要进行传递才能才include的布局中使用，但不可作为layout中定义的root布局；
+ - ViewStub：
  - merge：标签，不支持布局中直接包含单个merge标签；
 
 - 在布局中的适当位置使用 单向`@{}` 或 双向`@={}`，引用绑定的变量
@@ -401,7 +404,7 @@ public class CustomTextView extends TextView {
   android:layout_height="wrap_content"
   app:name="@{`yifan`}" />
 ```
-## 2、指定属性方法
+## 2、指定属性方法（BindingMethods）
 - 如果遇到属性与setter函数名称无法统一的情况，还可以使用`BindingMethods`注解来指定接收事件的函数；也是作为一种布局自定义属性接收函数的功能，所以需要在自定义控件中添加注解、事件接收函数；
 - 自定义控件，以`CustomImageView`为例；
 - 在头部添加注解`@BindingMethods`集合，定义需要声明的属性函数指定关系`@BindingMethod`
@@ -439,17 +442,248 @@ public class CustomImageView extends ImageView {
             app:loadimage="@{viewModel.img}" />
 ```
 
-## 3、自定义逻辑
+## 3、自定义逻辑（BindingAdapter）
+### 1）方式
+- 单属性绑定
+```
+@BindingAdapter("android:paddingLeft")
+public static void setPaddingLeft(View view, int padding) {
+  view.setPadding(padding,
+                  view.getPaddingTop(),
+                  view.getPaddingRight(),
+                  view.getPaddingBottom());
+}
+```
+- 多属性绑定
+ - java
+ ```
+ @BindingAdapter({"imageUrl", "error"})
+ public static void loadImage(ImageView view, String url, Drawable error) {
+   Picasso.get().load(url).error(error).into(view);
+ }
+ ```
+ - xml
+ ```
+ <ImageView app:imageUrl="@{venue.imageUrl}" app:error="@{@drawable/venueError}" />
+ ```
+ - 默认情况下，需要绑定的多个属性都发生变化才会发起通知，但也可以设置`requireAll`为`false`，但此时发起回调之后，没有发生变化的属性可能会传递`null`，需要做非空判断；
+ ```
+ @BindingAdapter(value={"imageUrl", "placeholder"}, requireAll=false)
+ ```
+### 2）语法
+- 通过`@BindingAdapter`关键字绑定属性，或修改原有的属性；
+- 方法必须申明为`public static`，共有静态函数，方法名称没有要求；
+- 方法的第一个参数类型必须是控件或其父类，第二个参数可以是自定义或原有参数类型；
+- 命名空间在`@BindingAdapter`参数未具体定义的情况下可以使用任意的，但如果已经定义那就必须遵守；
+- <span style="color:red">支持新旧参数对比</span>，BindingAdapter可以选择性地在函数中使用旧的变量，如果需要则应该在传递的参数中先定义旧变量参数、然后是新的参数，如下所示
+```
+@BindingAdapter("android:paddingLeft")
+public static void setPaddingLeft(View view, int oldPadding, int newPadding) {
+  if (oldPadding != newPadding) {
+      view.setPadding(newPadding,
+                      view.getPaddingTop(),
+                      view.getPaddingRight(),
+                      view.getPaddingBottom());
+   }
+}
+```
+- 事件处理绑定的函数，只能使用具有一个抽象方法的接口或抽象类作为参数
+```
+//方法绑定
+@BindingAdapter("android:onLayoutChange")
+public static void setOnLayoutChangeListener(View view, View.OnLayoutChangeListener oldValue,
+       View.OnLayoutChangeListener newValue) {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+    if (oldValue != null) {
+      view.removeOnLayoutChangeListener(oldValue);
+    }
+    if (newValue != null) {
+      view.addOnLayoutChangeListener(newValue);
+    }
+  }
+}
+
+//布局文件绑定
+<View android:onLayoutChange="@{() -> handler.layoutChanged()}"/>
+```
+ - 如果一个监听器具有多个回调方法，那只能拆分成多个监听器，例如：`View.OnAttachStateChangeListener`拥有两个回调事件：`onViewAttachedToWindow(View)`以及`onViewDetachedFromWindow(View)`，库中提供了两个接口来区分开这个两个属性以及处理器；
+```
+@TargetApi(VERSION_CODES.HONEYCOMB_MR1)
+public interface OnViewDetachedFromWindow {
+  void onViewDetachedFromWindow(View v);
+}
+
+@TargetApi(VERSION_CODES.HONEYCOMB_MR1)
+public interface OnViewAttachedToWindow {
+  void onViewAttachedToWindow(View v);
+}
+```
+> 因为改动一个监听器会影响到另外的，所以你需要定义一个适配器来为处理其中之一或同时处理两个，可以将`requireAll`设置为`false`来拆分两个属性的变化通知；
+```
+@BindingAdapter({"android:onViewDetachedFromWindow", "android:onViewAttachedToWindow"}, requireAll=false)
+public static void setListener(View view, OnViewDetachedFromWindow detach, OnViewAttachedToWindow attach) {
+    if (VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB_MR1) {
+        OnAttachStateChangeListener newListener;
+        if (detach == null && attach == null) {
+            newListener = null;
+        } else {
+            newListener = new OnAttachStateChangeListener() {
+                @Override
+                public void onViewAttachedToWindow(View v) {
+                    if (attach != null) {
+                        attach.onViewAttachedToWindow(v);
+                    }
+                }
+                @Override
+                public void onViewDetachedFromWindow(View v) {
+                    if (detach != null) {
+                        detach.onViewDetachedFromWindow(v);
+                    }
+                }
+            };
+        }
+
+        OnAttachStateChangeListener oldListener = ListenerUtil.trackListener(view, newListener,
+                R.id.onAttachStateChangeListener);
+        if (oldListener != null) {
+            view.removeOnAttachStateChangeListener(oldListener);
+        }
+        if (newListener != null) {
+            view.addOnAttachStateChangeListener(newListener);
+        }
+    }
+}
+```
+> 上述的代码例子比一般的稍微复杂一点，因为使用了两个监听（addOnAttachStateChangeListener()、removeOnAttachStateChangeListener() ）来替代原有的多回调函数的监听器（OnAttachStateChangeListener）。 android.databinding.adapters.ListenerUtil类可以帮助跟踪先前的监听器，以便于在BindingAdater中将他们删除。
+> 
+> 同时，通过用@TargetApi（VERSION_CODES.HONEYCOMB_MR1）注解标记OnViewDetachedFromWindow和OnViewAttachedToWindow，使DataBinding库只在Honeycomb MR1及其之上的系统版本中运行该监听器。
 
 # 九、绑定转换
-## 1、自动转换
+## 1、对象自动转换
+> 当一个Object对象从表达式中传递过来时，代码库会根据属性的值来选择接收的方法，而Object对象会被转换成所选方法的参数类型，数据通过ObservableMap进行保存，例如：
+```
+<TextView
+   android:text='@{userMap["lastName"]}'
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content" />
+```
+> 在`android:text`属性中定义返回的`userMap`对象属性值，会自动转换成`setText(CharSequence)`方法中所找到的参数类型，如果发现可能导致转换抛出异常时，应在表达式中做额外的转换；
+
 ## 2、自定义转换
+```
+<View
+   android:background="@{isError ? @color/red : @color/white}"
+   android:layout_width="wrap_content"
+   android:layout_height="wrap_content"/>
+```
+> 在一些情况下，需要为两个指定的类型定义一个自定义转换器。例如上述代码，view对象的`android:background`属性接收的是一个`Drawable`类型对象，但`@{}`中返回的结果`color`是一个int类型，需要将int属性值转换为ColorDrawable对象：
+
+- 定义一个静态函数，添加`@BindingConversion`注解
+```
+@BindingConversion
+public static ColorDrawable convertColorToDrawable(int color) {
+    return new ColorDrawable(color);
+}
+```
+> 要注意的是：
+> - 定义之后，函数会对xml布局文件<span style="color:red">所有</span>`@{}`中定义的符合所绑定类型的对象做处理；
+> - 在同个属性中通过三元表达式判断之后返回的两个对象类型应当统一，不能使用不同的类型，例如：`android:background="@{isError ? @drawable/error : @color/white}"`
+
+# 十、Inverse（反转）
+## 1、InverseMethod
+> 针对布局中model定义的数据类型与视图所展示的类型不一致时，通过`@ InverseMethod`注解标记的函数来统一两者之间的转换；例如：性别属性，在数据中经常以int类型标记，0、1、2，视图中表示为默认、男、女。
+```
+    @InverseMethod("convertIntToString")
+    public static int convertStringToInt(String value) {
+        if (null == value) {
+            return 0;
+        }
+        if (value.equals("男")) {
+            return 1;
+        } else if (value.equals("女")) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
+    public static String convertIntToString(int value) {
+        switch (value) {
+            case 1:
+                return "男";
+            case 2:
+                return "女";
+            default:
+            case 0:
+                return "默认";
+        }
+    }
+```
+- 布局中使用
+```
+    <data>
+
+        <import type="com.example.databindingtest.MainViewModel" />
+
+        <variable
+            name="viewModel"
+            type="com.example.databindingtest.MainViewModel" />
+
+    </data>
+
+···省略
+        <EditText
+            android:id="@+id/tv_context"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@{MainViewModel.convertIntToString(viewModel.sex)}"/>
+```
+> 注意方法是静态公有的，如果也写在ViewModel中，需要作为引入的类来使用，否则编译报错
+
+## 2、InverseBindingAdapter
+- 用于标记公有静态方法，进行双向绑定；
+- 方法参数的第一个类型必须为控件或其父类；
+- 需要配合@BindingAdapter使用；
+- 注意需要通过新旧值判断避免造成死循环；
+- 注解参数
+ - attribute：String类型，必填，表示当值发生变化时，要从哪个属性中检索这个变化的值，示例："android:text"
+ - event：String类型，非必填；如果填写，则使用填写的内容作为event的值；如果不填，在编译时会根据attribute的属性名再加上后缀“AttrChanged”生成一个新的属性作为event的值，举个例子：attribute属性的值为”android:text”，那么默认会在”android:text”后面追加”AttrChanged”字符串，生成”android:textAttrChanged”字符串作为event的值.
+ - event属性的作用：当View的值发生改变时用来通知dataBinding值已经发生改变了，一般需要使用@BindingAdapter创建对应属性来响应这种改变。
 
 
+
+## 3、InverseBindingMethods
+- 用于标记类，进行双向绑定；
+- 需要与`@InverseBindingMethod`、`@ BindingAdapter `配合使用；
+- 注解参数
+ - type：Class類型，必填，如：SeekBar.class
+ - attribute：String類型，必填，如：android:progress
+ - event：String類型，非必填，屬性值的生成規則以及作用和@InverseBindingAdapter中的event一樣。
+ - method：String類型，非必填，對於什麼時候填什麼時候不填，這裏舉個例子說明：比如SeekBar，它有android:progress屬性，也有getProgress方法【你沒看錯，就是getProgress，不是setProgress】，所以對於SeekBar的android:progress屬性，不需要明確指定method，因爲不指定method時，默認的生成規則就是前綴“get”加上屬性名，組合起來就是getProgress，而剛纔也說了，getProgress方法在seekBar中是存在的，所以不用指定method也可以，但是如果默認生成的方法getXxx在SeekBar中不存在，而是其他方法比如getRealXxx,那麼我們就需要通過method屬性，指明android:xxx對應的get方法是getRealXxx,這樣dataBinding在生成代碼時，就使用getRealXxx生成代碼了；從宏觀上來看，@InverseBindingMethod的method屬性的生成規則與@BindingMethod的method屬性的生成規則其實是類似的。
+
+
+# 十一、提供支持的属性
+
+> DataBinding已为以下的控件及属性，提供默认的适配器，无需自行实现
+
+|类|属性（S）|绑定适配器|
+|---|---|---|
+|[AdapterView](https://developer.android.com/reference/android/widget/AdapterView)|android:selectedItemPosition<br>android:selection|[AdapterViewBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/AdapterViewBindingAdapter.java)|
+|[CalendarView](https://developer.android.com/reference/android/widget/CalendarView)|android:date|[CalendarViewBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/CalendarViewBindingAdapter.java)|
+|[CompoundButton](https://developer.android.com/reference/android/widget/CompoundButton)|[android:checked](https://developer.android.com/reference/android/R.attr#checked)|[CompoundButtonBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/CompoundButtonBindingAdapter.java)|
+|[DatePicker](https://developer.android.com/reference/android/widget/DatePicker)|android:year<br>android:month<br>android:day|[DatePickerBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/DatePickerBindingAdapter.java)|
+|[NumberPicker](https://developer.android.com/reference/android/widget/NumberPicker)|[android:value](https://developer.android.com/reference/android/R.attr#value)|[NumberPickerBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/NumberPickerBindingAdapter.java)|
+|[RadioButton](https://developer.android.com/reference/android/widget/RadioButton)|[android:checkedButton](https://developer.android.com/reference/android/R.attr#checkedButton)|[RadioGroupBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/RadioGroupBindingAdapter.java)|
+|[RatingBar](https://developer.android.com/reference/android/widget/RatingBar)|[android:rating](https://developer.android.com/reference/android/R.attr#rating)|[RatingBarBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/RatingBarBindingAdapter.java)|
+|[SeekBar](https://developer.android.com/reference/android/widget/SeekBar)|[android:progress](https://developer.android.com/reference/android/R.attr#progress)|[SeekBarBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/SeekBarBindingAdapter.java)|
+|[TabHost](https://developer.android.com/reference/android/widget/TabHost)|android:currentTab|[TabHostBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/TabHostBindingAdapter.java)|
+|[TextView](https://developer.android.com/reference/android/widget/TextView)|[android:text](https://developer.android.com/reference/android/R.attr#text)|[TextViewBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/TextViewBindingAdapter.java)|
+|[TimePicker](https://developer.android.com/reference/android/widget/TimePicker)|android:hour<br>android:minute|[TimePickerBindingAdapter](https://android.googlesource.com/platform/frameworks/data-binding/+/refs/heads/studio-master-dev/extensions/baseAdapters/src/main/java/androidx/databinding/adapters/TimePickerBindingAdapter.java)|
 
 
 # 参考文档链接
-> - [android开发者文档](https://developer.android.com/topic/libraries/data-binding)
+> - [DataBinding的Android开发者说明文档](https://developer.android.com/topic/libraries/data-binding)
+> - [DataBinding的注解说明文档](https://developer.android.com/reference/android/databinding/Bindable)
 > - [Android DataBinding 从入门到进阶](https://juejin.im/post/5b02cf8c6fb9a07aa632146d#heading-15)
 > - [DataBinding使用教程（四）：BaseObservable与双向绑定](https://juejin.im/entry/59b628c66fb9a00a514368f8)
 > - [DataBinding最全使用说明](https://juejin.im/post/5a55ecb6f265da3e4d7298e9#heading-17)

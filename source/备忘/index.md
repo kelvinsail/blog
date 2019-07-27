@@ -1,6 +1,10 @@
 title: 备忘
 date: 2019-07-22 18:08:29
 ---
+# 新品
+- 替代Parcelable的@Parcelize
+
+
 # 工具
 - ￼LeakCanary
 - lint

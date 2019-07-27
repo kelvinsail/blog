@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 statu=$(cat is_install)
 if [ "$statu" = "false" ];then

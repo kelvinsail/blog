@@ -1,11 +1,14 @@
+---
 title: Shell脚本常用命令
-author: yifan
 tags:
   - shell
 categories:
   - Shell
+toc: false
+author: yifan
 date: 2019-07-12 21:04:00
 ---
+
 # 遍历目录文件
 ```
 files=$(ls $dir)
@@ -17,7 +20,9 @@ done
 <!-- more -->
 # 时间日期
 ## 获取当前时间并格式化
+```
 time="$(date '+%Y-%m-%d %H:%M:%S')"
+```
 
 ## 获取近几天的日期
 ```

@@ -33,6 +33,9 @@ dname1="$(date -d 1day +%Y%m%d)"	//明天
 dname1="$(date -d 2day +%Y%m%d)"	//后天
 dname1="$(date -d 3day +%Y%m%d)"	//大后天
 ```
+> Mac中的date命令格式为```usage: date [-jnRu] [-d dst] [-r seconds] [-t west] [-v[+|-]val[ymwdHMS]] ... 
+            [-f fmt date | [[[mm]dd]HH]MM[[cc]yy][.ss]] [+format]```，所以上述例子应写成</br>`$(date -v -1d +%Y-%m-%d)`
+
 
 # 路径
 ## 获取当前绝对路径

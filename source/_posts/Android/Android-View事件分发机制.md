@@ -3,7 +3,8 @@ author: yifan
 tags:
   - Android
   - View事件分发机制
-categories: []
+categories:
+  - Android
 date: 2019-05-18 22:00:00
 ---
 # 相关知识

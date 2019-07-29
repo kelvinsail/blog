@@ -1,7 +1,12 @@
 title: Android多线程
 author: yifan
-date: 2019-07-11 18:48:58
 tags:
+  - Android
+  - 多线程
+categories:
+  - Android
+  - 多线程
+date: 2019-07-11 18:48:00
 ---
 # 多线程特性
 - 原子性

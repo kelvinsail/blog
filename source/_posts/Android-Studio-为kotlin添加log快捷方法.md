@@ -10,7 +10,7 @@ toc: false
 date: 2019-07-29 14:30:14
 ---
 
-> 如果创建普通的java语言Android项目，输入`logt`、`logi`、`loge`等会自动提示补全，但创建kotlin项目之后，快捷方法就不起作用了，可以进行手动添加
+> 如果创建普通的java语言Android项目，输入`logt`、`logi`、`loge`等会自动提示补全，但创建kotlin项目之后，快捷方法输入就不起作用了，如果使用`println()`又没有默认的tag标记，可以通过以下方法进行手动添加log快捷方法输入
 
 - 创建文件夹
 ```
@@ -19,6 +19,8 @@ Linux: ~IntelliJ IDEA/config/templates
 macOS(IDEA): ~/Library/Preferences/IntelliJ IDEA/templates
 macOS(Android Studio):~/Library/Preferences/AndroidStudio3.4/templates
 ```
+
+<!-- more -->
 - 在创建的文件中添加配置文件（androidLogKotlin.xml）
 ```
 <templateSet group="AndroidLogKotlin">

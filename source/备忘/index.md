@@ -11,6 +11,7 @@ date: 2019-07-22 18:08:29
 - BlockCanary
 - systrace，traceview，MAT，Android Studio内置的性能优化工具
 
+
 # Android
 - ￼serializable & parcelable区别
 - Activity启动过程
@@ -38,6 +39,7 @@ date: 2019-07-22 18:08:29
 - Eventbus 跨进程
 - GC引起UI卡顿
 - ConstraintLayout
+- [Dagger2](https://zhuanlan.zhihu.com/p/24454466)
 
 
 # 网络

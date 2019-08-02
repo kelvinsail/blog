@@ -76,8 +76,10 @@ class User(var id: Int, age: Int, name: String, sex: Int = 0) : ViewModel(), Ser
 }
 ```
 ## 2、函数
-> 函数定义使用关键字 fun，参数格式为：参数 : 类型
-
+### 1）声明定义
+- 
+函数定义使用关键字 fun，参数格式为：参数 : 类型
+### 2）方式
 - 普通函数(无返回值)
 ```
 fun test(){

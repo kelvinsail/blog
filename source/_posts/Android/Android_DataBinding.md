@@ -230,6 +230,7 @@ android:text="@{@plurals/banana(bananaCount)}"
 android:text="@{@plurals/orange(orangeCount, orangeCount)}"
 ```
 - 其他一些资源需要使用特定的引用方式，如下：
+
 |Type|Normal reference|Expression reference|
 |---|---|---|
 |String[]|@array|@stringArray|

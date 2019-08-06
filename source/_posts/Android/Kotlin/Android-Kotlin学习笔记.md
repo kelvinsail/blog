@@ -77,8 +77,17 @@ class User(var id: Int, age: Int, name: String, sex: Int = 0) : ViewModel(), Ser
 ```
 ## 2、函数
 ### 1）声明定义
-- 
-函数定义使用关键字 fun，参数格式为：参数 : 类型
+- 函数声明使用关键字`fun`，默认为`public`，可以省略该关键字；
+- 参数格式为：`参数:类型`，
+ - 如果参数可以为空，则应在类型后加上`?`，格式为：`参数:类型?`；
+ - 参数允许具有默认值，格式为`参数:类型 = 默认值`；
+ - 具有多个默认参数时，可以通过参数名指定传递参数，如：`User().setInfo(1, home = "shenzhen")`；
+- 在参数定义之后，可以添加返回值申明，格式为：`fun tese(name:String):String{}`；
+ - 如果返回参数为空，具体定义类型为：`Unit`，但可以忽略不写；
+- 通过在声明关键字`fun`前添加关键字`override`来声明对父类的该函数进行重载；
+- 通过关键字`vararg`来声明可变参数，即类似于Java中的`public void setNames(String... names)`，kotlin的写法为`fun setNames(vararg names: String?)`，不允许传递多个可变参数；
+
+
 ### 2）方式
 - 普通函数(无返回值)
 ```
@@ -94,7 +103,7 @@ fun log(): Unit {
 fun test(text:String){}
 ```
 
-- 函数传多参数
+- 函数+可变参数
 ```
 fun testArray(vararg arr: String) {
     for (str in arr) {
@@ -120,10 +129,6 @@ fun sum(a: Int, b: Int) = a + b
 public fun sum(a: Int, b: Int): Int = a + b   
 
 ```
-- 函数+长度可变参数
-```
-
-```
 
 - 静态方法
 ```
@@ -142,6 +147,10 @@ fun testArray(vararg arr: String) {
     }
 }
 ```
+### 3）特殊类型
+- 泛型函数
+- 内联函数
+-  
 
 ## 3、变量、常量
 ### 1）创建、声明

@@ -23,6 +23,7 @@ date: 2019-09-10 16:10:59
   </template>
 </templateSet>
 ```
+<!-- more -->
 ## 元素节点
 - 模板集合
  - 元素`templateSet`：作为根元素节点，定义一个模板集合
@@ -54,8 +55,10 @@ date: 2019-09-10 16:10:59
 
 ## 编辑
 ### Android Studio
-- 位置：设置窗口->Editor->Live Templates
-![upload successful](/images/pasted-100.png)
+
+- 位置：设置->Editor->Live Templates
+![image.png](/images/2019/09/10/c090a400-d3a5-11e9-80cf-73d4be110db3.png)
+
 ### 加入自定义模板
 - 模板文件夹位置
  - Windows: <your_user_home_directory>.IntelliJ 

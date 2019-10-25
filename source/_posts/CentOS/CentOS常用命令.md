@@ -61,7 +61,12 @@ mv filepath newfilepath
 mv -r dirpath newdirpath
 mv dirorfile newdirorfile //也可用来给文件或文件夹重命名
 ```
-
+## 异常
+### 无法删除.user.ini或提示`Operation not permitted`
+```
+chattr -i /path/.user.ini
+rm -rf /path/.user.ini
+```
 
 # Crontab定时任务
 ## 查看当前用户的定时任务
@@ -195,7 +200,6 @@ du -s ./*
 ```
 free -h
 ```
-
 
 # 压缩/解压
 

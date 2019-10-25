@@ -1,15 +1,16 @@
+---
 title: Gitlab 迁移
-author: yifan
 tags:
   - Gitlab
   - Gitlab迁移
 categories:
   - CentOS
   - Gitlab
-  - ''
-  - ''
+toc: false
+author: yifan
 date: 2019-05-15 10:10:00
 ---
+
 # 备份Gitlab
 > 虽然不停止gitlab链接也能够正常备份，但最好关闭gitlab（主要保持postgresql、redis运行状态）之后再进行备份，以防备份迁移期间有同事或其他人提交了代码；
 ## 查看版本
@@ -69,15 +70,17 @@ Deleting old backups ... skipping
 > 安装与旧服务器同一版本的Gitlab，具体参考 [GitLab安装](http://blog.kelvinsail.com/2019/05/08/CentOS/CentOS-%E9%83%A8%E7%BD%B2Gitlab/) 
 
 ## 将备份与配置文件复制到新服务器上
-> 将gitlab.rb还原到 `/etc/gitlab/gitlab.rb` 后，运行配置命令
+> 解压之前备份的配置文件压缩包，将gitlab.rb还原到 `/etc/gitlab/gitlab.rb` 后，运行配置命令
 ```
 gitlab-ctl reconfigure
 ```
 
-## 将tar备份文件复制到新服务器备份目录
+## 将tar备份文件复制到新服务器备份目录`/var/opt/gitlab/backups/`
 ```
 mv 1519617101_2018_02_26_gitlab_backup.tar  /var/opt/gitlab/backups/1519617101_2018_02_26_gitlab_backup.tar
 ```
+> 如果提示tar文件权限不足，可以设置为777
+
 ## 开始还原
 ```
 gitlab-rake gitlab:backup:restore BACKUP=1519617101_2018_02_26

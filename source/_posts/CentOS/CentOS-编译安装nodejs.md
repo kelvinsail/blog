@@ -1,3 +1,4 @@
+---
 title: CentOS 编译安装nodejs
 tags:
   - CentOS
@@ -5,9 +6,11 @@ tags:
 categories:
   - CentOS
   - nodejs
+toc: false
 author: yifan
 date: 2019-04-29 10:15:00
 ---
+
 # 访问`https://nodejs.org/dist/`查看最新版本
 这里以`v9.9.0`为例
 # 开始安装`v9.9.0`
@@ -45,4 +48,28 @@ v9.9.0
 5.6.0
 # node -v
 v9.9.0
+```
+
+# 其他
+## Hexo
+- 安装
+```
+npm install -g hexo-cli
+```
+
+- 初始化
+```
+hexo init <folder>
+cd <folder>
+npm install
+```
+
+- 生成
+```
+hexo g
+```
+
+- 运行
+```
+hexo s
 ```

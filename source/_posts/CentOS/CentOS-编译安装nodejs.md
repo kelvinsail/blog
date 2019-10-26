@@ -63,6 +63,10 @@ hexo init <folder>
 cd <folder>
 npm install
 ```
+- 重新安装
+```
+npm install hexo --save
+```
 
 - 生成
 ```

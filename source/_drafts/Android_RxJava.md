@@ -1,3 +1,4 @@
+---
 title: Android RxJava使用
 tags:
   - Android
@@ -5,8 +6,8 @@ categories:
   - Android
   - RxJava
 toc: false
-date: 2019-07-21 23:59:38
 ---
+
 # 一、RxJava
 - [RxJava](https://github.com/ReactiveX/RxJava)
 - [RxAndroid](https://github.com/ReactiveX/RxAndroid)
@@ -45,18 +46,22 @@ date: 2019-07-21 23:59:38
 - fromIterable
 
 ### 2）转换
-- cast
-- zip
-- map
-- flatmap
-- concat
-- concatMap
-- merge
-- collect
-- reduce
-- startWith
-- flatMapIterable
-- switchMap
+#### cast
+#### zip
+#### map
+ - 类型变换操作，变换之后输出类型值
+#### flatmap
+ - 类型变化操作，变化之后输出的是Observable对象，与map不同，可用于合并请求等操作；
+ - 但针对Observables发射的数据做的是合并(merge)操作，并不能保证顺序，数据可能是交叉的；
+#### concat
+#### concatMap
+ - 变换、连接操作，解决了flatMap()的交叉问题，提供了一种能够把发射的值连续在一起的铺平函数
+#### merge
+#### collect
+#### reduce
+#### startWith
+#### flatMapIterable
+#### switchMap
 
 ### 3）过滤
 - skip，skipFirst，skipLast
@@ -71,11 +76,13 @@ date: 2019-07-21 23:59:38
 - debounce/throtleWithTimeout
 
 ### 4)延时
-- delay
-- timer
-- interval
-- defer
-- range
+#### delay
+#### timer
+#### interval
+ - 定时、轮询，`.interval(delay,TimeUnit.SECONDS)`，第一个参数delay为轮询间隔时长、第二个为单位
+#### defer
+#### range
+ - 从起始点(start)开始发射(count次)数据，`.range(start,count)`
 
 ### 5）条件
 - all
@@ -90,9 +97,11 @@ date: 2019-07-21 23:59:38
 - sequenceEqual
 
 ### 6）其他
-- repeat，repeatWhen
-- count
-- retry，retryUtil，retryWhen
+#### repeat
+ - 循环发射数据，`.repeat(times)`
+#### repeatWhen
+#### count
+#### retry，retryUtil，retryWhen
 
 <!--
 参考文章

@@ -76,3 +76,10 @@ cd ~/Library/Android/sdk/tools/bin
 
 ```
 - 根据提示，输入y
+
+## Android Studio 3.5 xml代码格式化错乱问题
+- 打开任意xml文件
+- 快键键打开代码格式化选项弹窗
+  - Windows: ctrl + shift + alt + l 
+  - macOS: command + shift+ option + L
+- 取消勾选"Rerange code"

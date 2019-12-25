@@ -75,7 +75,9 @@ class User(var id: Int, age: Int, name: String, sex: Int = 0) : ViewModel(), Ser
     
 }
 ```
-## 2、函数
+## 2、接口
+
+## 3、函数
 ### 1）声明定义
 - 函数声明使用关键字`fun`，默认为`public`，可以省略该关键字；
 - 参数格式为：`参数:类型`，
@@ -86,6 +88,10 @@ class User(var id: Int, age: Int, name: String, sex: Int = 0) : ViewModel(), Ser
  - 如果返回参数为空，具体定义类型为：`Unit`，但可以忽略不写；
 - 通过在声明关键字`fun`前添加关键字`override`来声明对父类的该函数进行重载；
 - 通过关键字`vararg`来声明可变参数，即类似于Java中的`public void setNames(String... names)`，kotlin的写法为`fun setNames(vararg names: String?)`，不允许传递多个可变参数；
+- kotlin中的函数方法体也可当做变量来赋值，例如toast扩展函数的声明实现
+```
+fun Context.toast(msg: CharSequence) = Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+```
 
 
 ### 2）方式
@@ -198,9 +204,7 @@ fun <T> mark(names: () -> T){
 
 #### f）高阶函数
 
-
-
-## 3、变量、常量
+## 4、变量、常量
 ### 1）创建、声明
 > 创建实例时不需要使用关键字new
 - var：可变变量定义：
@@ -254,6 +258,47 @@ fun <T> mark(names: () -> T){
     I/Test: y: 2
     I/Test: test: 3
     I/Test: test: 3
+ ```
+
+### 3）set/get方法
+```
+var <propertyName>[: <PropertyType>] [= <property_initializer>]
+    [<getter>]
+    [<setter>]
+```
+- 对于var修饰的变量，set/get方法有默认实现，可以不用写；而val修饰的变量则没有相应的set默认实现，也不允许重写
+- set/get方法的自定义实现
+```
+    var title: String = ""
+        get() {
+            return field.toUpperCase(Locale.getDefault())
+        }
+        set(value) {
+            field = value.trim()
+            Log.d(TAG, "set: $value")
+        }
+
+    val content: String
+        get() {
+            return "this is content"
+        }
+```
+
+- field变量
+ - 方法中需要以field替代自身变量，不允许通过变量名引用set/get方法本身的变量，会导致递归死循环；
+ - 方法中也不允许声明定义与自身变量同名的其他变量；
+ - field被称为Backing Fields(后端变量)，相当于`this`，代指变量自身的引用；
+
+- private修饰
+ - 可以通过`private`将set/get方法修饰为私有，但如果变量本身为`public`，则get方法无法定为私有函数；
+ ```
+     var title: String = ""
+        get() {
+            return field.toUpperCase(Locale.getDefault())
+        }
+        private set(value) {
+            field = value.trim()
+        }
  ```
 
 # 二、数据类型
@@ -334,6 +379,10 @@ var string_array:Array<String> = arrayOf{"Hello","World"}
 ## 2、循环语句
 ### 1）while
 ### 2）for
+#### a）for
+#### b）forEach
+#### c）forEachIndexed
+### 3）repeat
 
 ## 3、为空判断
 ### 1）可空属性
@@ -357,6 +406,13 @@ var string_array:Array<String> = arrayOf{"Hello","World"}
 > Java中通过`instanceof`判断一个属性是否为某个类的实例化对象，但在kotlin中，将该命令简化为`is`，使用方式与Java中差不多：`if(user is User)`，如果要判断不相等，则加上`!`，如：`if(user !is User)`;
 ### 2）数组元素判断
 > Java中判断一个数组中是否包含某个元素得时候，基本都是通过遍历循环来判断，而在kotlin中，提供了关键字`in`来判断，例如：判断Int数组arr是否包含元素`4`，为`if(4 in arr)`，除了判断基本类型也可用来判断类对象，如：`(user in arr)`，如果要进行不存在判断，则加上`!`，为`(user !in arr)`
+
+<!--
+Android
+1、控件变量自动映射功能，直接通过控件id名引用控件
+
+-->
+
 
 # 参考文档
 > [Kotlin内联函数的使用](https://www.jianshu.com/p/4f29c9724b33)

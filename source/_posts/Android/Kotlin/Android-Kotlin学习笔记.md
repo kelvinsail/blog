@@ -372,6 +372,35 @@ var string_array:Array<String> = arrayOf{"Hello","World"}
   }
  ```
 ## 3、容器
+> kotlin与Java类似，也有三类基本的容器：集合Set、映射Map、队列List，而每种类型又分为只读、可读写两种，需要在初始化时就声明该容器的类型，比如：MutableSet为可读写集合、Set为普通只读集合。
+
+### 1）容器的基本操作
+
+- isEmpty
+- isNotEmpty
+- clear
+- contains
+- iterator
+- count/size
+
+### 2）Set/MutableSet集合
+
+#### a）特点
+- 容器内部元素进行无序排列，所以无法按照下标进行访问、删除；
+- 容器内部元素具有唯一性，通过哈希值校验判断是否存在相同元素，如果存在，则覆盖（MutableSet）；
+- MutableSet的add方法仅仅是往集合中添加元素、由于是无序排列的，所以无法确定元素的位置；
+- 没有提供修改元素的方法，一个元素添加后就无法进行变更；
+- remove方法仅用于杀出指定的元素，而无法删除指定位置的元素；
+#### b）遍历
+- for-in循环
+- iterator迭代器遍历
+- forEach遍历
+
+
+### 3）List/MutableList队列
+### 4）Map/MutableMap映射
+
+
 
 # 三、条件判断
 ## 1、ifelse
@@ -410,7 +439,11 @@ var string_array:Array<String> = arrayOf{"Hello","World"}
 <!--
 Android
 1、控件变量自动映射功能，直接通过控件id名引用控件
-
+2、set中元素具有唯一性，kotlin的setOf中添加多个同样的，会有多少个元素？
+```
+val _str = "123"
+val map = setOf(_str, _str, _str)
+```
 -->
 
 

@@ -406,9 +406,51 @@ var string_array:Array<String> = arrayOf{"Hello","World"}
 ## 1、if-else/when-else
 ### a）if-else
 ```
-if()
+//与Java一致，普通判断使用
+if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+    Log.d(TAG, "onCreate: is Android Q")
+}
+//可作为参数赋值
+var version = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P)
+    "Android Q"
+else
+    "Android Q 以下"
 ```
+
 ### b）when-else
+- 作为“switch-case”的替代；
+ - 也可以与“if-else”一样作为参数的赋值；
+ - 作为判断对比的不再必须是常量，可以为变量，也可以为语句；
+- 格式
+ - 以“判断值/语句 -> {}”替代 “case 常量: break;”
+ - 以“else -> {}”替代“default: break;” 
+
+```
+
+        when(baseContext){
+            is Context -> {}
+            is Application -> {}
+            is AppCompatActivity -> {}
+        }
+
+        when (Build.VERSION.SDK_INT) {
+            Build.VERSION_CODES.Q -> {
+                Log.d(TAG, "onCreate: Android Q")
+            }
+            else -> {
+                Log.d(TAG, "onCreate: Android 其他")
+            }
+        }
+
+        version = when (Build.VERSION.SDK_INT) {
+            Build.VERSION_CODES.Q -> {
+                "Android Q"
+            }
+            else -> {
+                "其他"
+            }
+        }
+```
 
 ## 2、循环语句
 ### 1）while

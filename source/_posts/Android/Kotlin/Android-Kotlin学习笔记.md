@@ -403,15 +403,111 @@ var string_array:Array<String> = arrayOf{"Hello","World"}
 
 
 # 三、条件判断
-## 1、ifelse
+## 1、if-else/when-else
+### a）if-else
+```
+//与Java一致，普通判断使用
+if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+    Log.d(TAG, "onCreate: is Android Q")
+}
+//可作为参数赋值
+var version = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P)
+    "Android Q"
+else
+    "Android Q 以下"
+```
+
+### b）when-else
+- 作为“switch-case”的替代；
+ - 也可以与“if-else”一样作为参数的赋值；
+ - 作为判断对比的不再必须是常量，可以为变量，也可以为语句；
+- 格式
+ - 以“判断值/语句 -> {}”替代 “case 常量: break;”
+ - 以“else -> {}”替代“default: break;” 
+
+```
+
+        when(baseContext){
+            is Context -> {}
+            is Application -> {}
+            is AppCompatActivity -> {}
+        }
+
+        when (Build.VERSION.SDK_INT) {
+            Build.VERSION_CODES.Q -> {
+                Log.d(TAG, "onCreate: Android Q")
+            }
+            else -> {
+                Log.d(TAG, "onCreate: Android 其他")
+            }
+        }
+
+        version = when (Build.VERSION.SDK_INT) {
+            Build.VERSION_CODES.Q -> {
+                "Android Q"
+            }
+            else -> {
+                "其他"
+            }
+        }
+```
 
 ## 2、循环语句
 ### 1）while
+#### a）while
+#### b）do-While
+
 ### 2）for
-#### a）for
-#### b）forEach
-#### c）forEachIndexed
+#### a）forin
+- 常见循环方式
+```
+val list:ArrayList<String> = arrayListOf("1","2","3")
+        
+//元素循环
+for (item in list){
+   Log.d(TAG, "onCreate: $item")
+}
+
+//下标遍历循环
+for (index in list.indices){
+   Log.d(TAG, "onCreate: ${list[index]}")
+}
+
+//区间循环
+for(i in 0..10){
+   Log.d(TAG, "onCreate: $i")
+}
+```
+- until、step、downTo关键字
+ - until 左开右闭区间
+```
+   //左开右闭区间，即从11开始，到小于66为止，包含11、但不包含66
+   for(i in 11 until 66){
+       Log.d(TAG, "onCreate: $i")
+   }
+```
+- step 递增设定
+```
+   //从23递增到89，但每次递增值为4，而不是1
+   for(i in 23..89 step 4){
+       Log.d(TAG, "onCreate: $i")
+   }
+```
+- downTo 递减
+```
+   //forin默认递增，downTo改为递减
+   for(i in 50 downTo 7){
+       Log.d(TAG, "onCreate: $i")
+   }
+```
+#### b）forEach/forEachIndexed
+> List、Set容器自带遍历方法forEach/forEachIndexed，但Map不能使用下标遍历，所以只有forEach
+
 ### 3）repeat
+### 4）跳出循环
+- contiune
+- break
+- 标记
 
 ## 3、为空判断
 ### 1）可空属性
@@ -436,15 +532,14 @@ var string_array:Array<String> = arrayOf{"Hello","World"}
 ### 2）数组元素判断
 > Java中判断一个数组中是否包含某个元素得时候，基本都是通过遍历循环来判断，而在kotlin中，提供了关键字`in`来判断，例如：判断Int数组arr是否包含元素`4`，为`if(4 in arr)`，除了判断基本类型也可用来判断类对象，如：`(user in arr)`，如果要进行不存在判断，则加上`!`，为`(user !in arr)`
 
-<!--
-Android
+# 疑问？
 1、控件变量自动映射功能，直接通过控件id名引用控件
 2、set中元素具有唯一性，kotlin的setOf中添加多个同样的，会有多少个元素？
 ```
 val _str = "123"
 val map = setOf(_str, _str, _str)
 ```
--->
+3、set是无序的，为什么可以forEach
 
 
 # 参考文档

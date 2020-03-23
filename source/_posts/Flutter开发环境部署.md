@@ -3,39 +3,6 @@ title: Flutter开发环境部署
 tags:
   - Android
   - Flutter
-originContent: |+
-  # MacOS
-  ## 一、下载
-  ### 1、官网
-  [传送门](https://flutter.dev/docs/development/tools/sdk/releases?tab=macos#macos)
-  ### 2、git
-  ```
-  git clone -b master https://github.com/flutter/flutter.git
-  cd flutter
-  flutter --version
-  ```
-
-  ## 二、设置
-  ### 1、环境变量
-  - 1、打开
-  ```
-  vim ~/.bash_profile
-  ```
-  - 2、添加flutter路径并保存
-  ```
-  export PATH="$PATH:/Volumes/GALAXY/Android/flutter/bin"
-  ```
-  - 3、刷新
-  ```
-  source ~/.bash_profile
-  ```
-  ### 2、检查、补全设置
-  ```
-  flutter doctor
-  ```
-
-
-
 categories:
   - Android
   - Flutter
@@ -72,14 +39,26 @@ vim ~/.bash_profile
 ```
 export PATH="$PATH:/Volumes/GALAXY/Android/flutter/bin"
 ```
-- 3、刷新
+- 3、添加Flutter域名，防止`get pub`被墙
+ - mac
+ ```
+ export PUB_HOSTED_URL=https://pub.flutter-io.cn
+ export FLUTTER_STORAGE_BASE_URL=https://storage.flutter-io.cn
+ ```
+ - windows
+ Path中添加：
+ ```
+ PUB_HOSTED_URL : https://pub.flutter-io.cn
+ FLUTTER_STORAGE_BASE_URL : https://storage.flutter-io.cn
+ ```
+- 4、刷新
 ```
 source ~/.bash_profile
 ```
+
 ### 2、检查、补全设置
 ```
 flutter doctor
 ```
+
 ![image.png](/images/2020/01/10/6ca08920-334d-11ea-a1f9-c98b8da8634c.png)
-
-

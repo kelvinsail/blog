@@ -29,6 +29,7 @@ cd flutter
 flutter --version
 ```
 
+<!--- more --->
 ## 二、设置
 ### 1、环境变量
 - 1、打开

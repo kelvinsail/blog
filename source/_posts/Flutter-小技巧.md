@@ -1,7 +1,9 @@
 ---
 title: Flutter 小技巧
-tags: []
-categories: []
+tags:
+  - Flutter
+categories:
+  - Flutter
 toc: false
 date: 2020-03-24 08:33:39
 ---

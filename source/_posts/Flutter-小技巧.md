@@ -20,7 +20,7 @@ date: 2020-03-24 08:33:39
               ),
 ```
 
-<!--- more --->
+<!-- more -->
 # 获取状态栏高度
 ```
    double _statusBarHeight = MediaQuery.of(context).padding.top;

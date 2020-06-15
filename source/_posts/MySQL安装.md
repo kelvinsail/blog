@@ -10,13 +10,18 @@ date: 2020-06-11 22:10:14
 
 # Windows
 ## 下载（以5.7.29为例，下载x64的zip包）
-[下载页面](https://dev.mysql.com/downloads/mysql/)
+<!-- more -->
+在历史版本中选择5.7.29[历史版本](https://downloads.mysql.com/archives/community/)
+![image.png](/images/2020/06/15/7cd632e0-aea9-11ea-8730-812c8aa7bada.png)
+
+或者最新版
+[最新版本](https://dev.mysql.com/downloads/mysql/)
 ![image.png](/images/2020/06/11/67499040-abeb-11ea-b272-f9510041fa93.png)
+
 
 ## 安装
 - 解压到目标路径
 - 在mysql跟目录下创建`my.ini`配置文件，写入配置
-<!-- more -->
 ```
 [client]
 # 设置mysql客户端默认字符集

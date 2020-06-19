@@ -8,7 +8,32 @@ toc: false
 date: 2020-06-16 14:42:59
 ---
 
-# 代理白名单 
+# 代理白名单
+
+## ClashX（Mac）[Git地址](https://github.com/yichengchen/clashX)
+- 编辑`~/.config/clash/proxyIgnoreList.plist`(如果没有该文件，则新建)
+- 参考[Demo](https://github.com/yichengchen/clashX/blob/master/proxyIgnoreList.plist)文件加入自定义的白名单域名
+<!-- more -->
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>192.168.0.0/16</string>
+	<string>10.0.0.0/8</string>
+	<string>172.16.0.0/12</string>
+	<string>127.0.0.1</string>
+	<string>localhost</string>
+	<string>*.local</string>
+	<string>*.crashlytics.com</string>
+	<!-- 上面的不能删掉 -->
+	...加入新的域名，如：<string>*.baidu.com</string>
+</array>
+</plist>
+```
+- 重启ClashX
+
+## Clash For Windows 
 [文档连接](https://docs.cfw.lbyczf.com/contents/bypass.html)
 > 绕过系统代理
 > Clash for Windows在v 0.4.5 版本后可以自定义系统代理需要绕过的域名或IP

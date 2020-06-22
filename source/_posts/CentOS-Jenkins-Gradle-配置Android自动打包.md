@@ -6,7 +6,6 @@ toc: false
 date: 2020-06-18 23:43:29
 ---
 
-
 # 检查JDK
 > 如果jdk是通过yum安装的OpenJDK，则需要卸载之后重新安装，否则编译时会报错
 ```
@@ -24,6 +23,7 @@ Deprecated Gradle features were used in this build, making it incompatible with 
 Use '--warning-mode all' to show the individual deprecation warnings.
 See https://docs.gradle.org/5.6.4/userguide/command_line_interface.html#sec:command_line_warnings
 ```
+<!-- more -->
 - 关闭Jenkins
 ```
 # service jenkins stop

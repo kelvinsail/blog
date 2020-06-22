@@ -1,7 +1,15 @@
 ---
 title: CentOS+Jenkins+Gradle 配置Android自动打包
-tags: []
-categories: []
+tags:
+  - CentOS
+  - Jenkins
+  - Android
+  - Gradle
+categories:
+  - Android
+  - Gradle
+  - Jenkins
+  - CentOS
 toc: false
 date: 2020-06-18 23:43:29
 ---
@@ -31,7 +39,6 @@ Stopping jenkins (via systemctl):                          [  OK  ]
 ```
 - 查看yum已安装的jdk
 ```
-<!-- more -->
 # rpm -qa | grep openjdk
 java-1.8.0-openjdk-headless-1.8.0.232.b09-0.el7_7.x86_64
 java-1.8.0-openjdk-1.8.0.232.b09-0.el7_7.x86_64

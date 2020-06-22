@@ -1,10 +1,10 @@
 ---
 title: CentOS+Jenkins+Gradle 配置Android自动打包
 tags:
-  - CentOS
-  - Jenkins
   - Android
   - Gradle
+  - CentOS
+  - Jenkins
 categories:
   - Android
   - Gradle
@@ -142,9 +142,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)
 - 运行`./sdkmanager "platform-tools" "platforms;android-28"`安装所需要的包（弹出的协调需要输入`y`，接受）
 - 运行`./sdkmanager –licenses`接受所有协议
 
-# 安装Gradle
+# 安装Gradle（可选）
 - 下载所需版本的Gradle包，并解压到安装路径（[链接](https://services.gradle.org/distributions/)）
-- 在Jenkins中配置（新版的Jenkins可以自动安装gradle，也可以选择本地已有的gradle路径）
+- 在Jenkins中配置（新版的Jenkins可以自动安装gradle，第一次编译需要额外时间下载，也可以选择本地已有的gradle路径）
 
 # Jenkins配置
 - 进入配置页面`Jenkins`>`系统管理(Manage Jenkins)`>`全局工具配置(Global Tool Configuration)` > `Gradle`
@@ -154,13 +154,16 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.251-b08, mixed mode)
 ![image.png](/images/2020/06/22/597afb80-b795-4eab-b4e4-69d7a558b69f.png)
 - 进入配置页面`Jenkins`>`系统管理(Manage Jenkins)`>`系统配置(Configure System)`
 - 配置android sdk路径
-```
 ![image.png](/images/2020/06/22/b445398a-9c16-4a6b-915b-87a4012fa3fb.png)
-```
 
 # 创建Android构建项目
-- 略
-
+- 创建自由风格项目
+- 配置git地址、分支名
+- `构建`>`Invoke Gradle script`项中，选择gradle版本
+- 在`Tasks`，输入构建命令参数，比如`clean`、`--no-daemon assembleTest`
+- `构建`>`执行Shell`项中，输入构建后操作，比如上传`蒲公英`
+- 保存，点击立即构建
+> 可以安装`Git Parameter`插件，在项目详情里直接选择构建分支进行构建
 
 # 异常处理
 ## 直接运行sdkmanager报错`Warning: Could not create settings`

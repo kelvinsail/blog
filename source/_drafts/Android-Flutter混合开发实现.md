@@ -1,9 +1,8 @@
 ---
 title: Android Flutter混合开发实现
 tags:
-  - Flutter
   - Android
-originContent: "# \n\n# Native中引入Flutter\n## 创建项目\n## 创建flutter_module\n```\nflutter create --androidx -t module flutter_module\n```\n> 一般在Native项目的同级目录下创建flutter module，方便其他平台项目引用，命名不要使用单一的`flutter`，在引入flutter module之后，Native会自动生成一个`Flutter`module\n## 引入flutter_module\n- `setting.gradle`中添加module依赖\n```\nsetBinding(new Binding([gradle: this]))\nevaluate(new File(\n\t//如果module创建在了Native根目录下，此处的parentFile需要去掉\n        settingsDir.parentFile,\n        //创建的flutter module名称，如果是他人提供的已实现的module，需要先用AS编译下或运行下`flutter pub get`\n        'flutter_module/.android/include_flutter.groovy'\n))\n```\n- `app/build.gradle`引用`flutter`\n```\nandroid {\n    //....省略\n    defaultConfig {\n\t//...\n\n\t//\n        minSdkVersion 21\n    }\n\n    compileOptions {\n\t//使用java1.8来编译\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n\n}\n\ndependencies {\n    //....省略\n\n    //注意此处引用的是`flutter`，即Native项目自动生成的module\n    //而不是import的`flutter module`\n    implementation project(':flutter')\n}\n```\n- \n## 打开"
+  - Flutter
 categories:
   - Android
   - Flutter
@@ -62,4 +61,86 @@ dependencies {
     implementation project(':flutter')
 }
 ```
+
 ## 使用
+### Fragment
+```
+val transaction = supportFragmentManager.beginTransaction()
+transaction.replace(
+    android.R.id.content,
+    //flutter 1.12之后，Flutter类弃用
+    //Flutter.initialRoute("initialRoute").build()
+    FlutterFragment.withNewEngine().initialRoute("initialRoute").build()
+)
+transaction.commit()
+```
+### Activity
+> 需要先把`io.flutter.embedding.android.FlutterActivity`添加至`AndroidManifest`清单中
+```
+val intent = io.flutter.embedding.android.FlutterActivity.withNewEngine()
+    .initialRoute("initialRoute").build(this)
+startActivity(intent)
+```
+### View
+> 1.12之后似乎不再建议使用FlutterView来嵌入Native中
+```
+
+import android.os.Bundle
+import android.util.Log
+import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
+import io.flutter.embedding.android.FlutterView
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.dart.DartExecutor
+import io.flutter.embedding.engine.renderer.FlutterUiDisplayListener
+
+class MainActivity : FlutterActivity() {
+
+    lateinit var flutterEngine: FlutterEngine
+
+    companion object {
+        const val TAG = "MainActivity"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        FlutterMain.startInitialization(applicationContext)
+        super.onCreate(savedInstanceState)
+
+        val layout = FrameLayout(this)
+        setContentView(layout)
+        flutterEngine = FlutterEngine(this)
+        flutterEngine.navigationChannel.setInitialRoute("initialRoute")
+        flutterEngine.dartExecutor.executeDartEntrypoint(
+            DartExecutor.DartEntrypoint.createDefault()
+        )
+
+        val flutterView = FlutterView(this)
+        val lp = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        )
+        flutterView.addOnFirstFrameRenderedListener(object : FlutterUiDisplayListener {
+            override fun onFlutterUiNoLongerDisplayed() {
+                Log.d(TAG, "onFlutterUiNoLongerDisplayed: ")
+            }
+
+            override fun onFlutterUiDisplayed() {
+                Log.d(TAG, "onFlutterUiDisplayed: ")
+            }
+        })
+        layout.addView(flutterView, lp)
+        flutterView.attachToFlutterEngine(flutterEngine)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        flutterEngine.lifecycleChannel.appIsResumed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        flutterEngine.lifecycleChannel.appIsPaused()
+    }
+    
+}
+```

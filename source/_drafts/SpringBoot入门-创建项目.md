@@ -48,3 +48,21 @@ toc: false
 
 # 运行结果
 ![image.png](/images/2020/01/31/5ffa57c0-4417-11ea-a184-eb793a5501ba.png)
+
+# 配置
+## 变更端口号
+- 打开`application.properties`
+- 添加端口配置`server.port=8090`
+- 重新构建运行项目
+## 配置优先级
+- 命令行参数；
+- 来自java:comp/env的JNDI属性；
+- Java系统属性(System.getProperties())；
+- 操作系统环境变量；
+- RandomValuePropertySource配置的random.*属性值
+- jar 包外部的 application-{profile}.properties或application.yml （带spring.profile）配置文件；
+- jar 包内部的 application-{profile}.properties或application.ym （带spring.profile）配置文件；
+- jar 包外部的application.properties 或 application.yml （不带 spring.profile）配置文件；
+- jar 包内部的 application properties 或 application ym （不带 spring.profile）配置文件；
+- @Configuration 注解类上的＠PropertySource；
+- 通过 SpringApplication.setDefaultProperties 指定的默认属性；

@@ -102,11 +102,15 @@ MAILTO=root
 # 分 时 日期 月份 星期几 用户名 要执行的命令
 ```
 # 网络
-## 端口
-
+## 列出端口使用情况
 ```
 netstat -tnlp
 ```
+## 查看某个端口
+```
+netstat -pan | grep [端口号]
+```
+
 ## IP
 ```
 ip a //或addr或address
@@ -119,6 +123,10 @@ ps -ef
 ## ps查看进程数量
 ```
 ps -ef | wc -l 
+```
+## 查看某个pid进程
+```
+ps -aux | grep [pid]
 ```
 
 ## top

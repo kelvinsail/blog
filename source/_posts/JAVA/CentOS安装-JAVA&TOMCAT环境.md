@@ -1,8 +1,8 @@
 ---
 title: CentOS安装 JAVA&TOMCAT环境
 tags:
-  - JAVA
   - CentOS
+  - JAVA
   - Tomcat
 categories:
   - CentOS
@@ -173,3 +173,13 @@ vi /opt/tomcat/webapps/manager/META-INF/context.xml
 ## 8、访问管理页面
 
 ![upload successful](/images/pasted-48.png)
+
+# Tomcat卸载
+- 停止tomcat
+```
+service httpd stop
+```
+- 关闭tomcat自启动
+```
+sudo systemctl disable httpd
+```

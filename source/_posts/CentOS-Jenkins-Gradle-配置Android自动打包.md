@@ -218,3 +218,10 @@ A problem occurred configuring project ':app'.
 ```
 ./sdkmanager –licenses
 ```
+
+## 提示`Could not read script 'flutter/packages/flutter_tools/gradle/app_plugin_loader.gradle' as it does not exist`
+> 确保项目名没有特殊字符，‘-’貌似也算
+```
+$ rm android/settings.gradle
+$ flutter create .
+```

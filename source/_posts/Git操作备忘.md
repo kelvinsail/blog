@@ -8,14 +8,13 @@ toc: false
 date: 2020-07-16 08:55:47
 ---
 
-
 # 初始化
 ## Git 全局设置
 ```
 git config –global user.name “吴一帆”
 git config –global user.email “kelvinsail@163.com“
 ```
-
+<!-- more -->
 ## 创建一个新存储库
 ```
 git clone http://gitlab.kelvinsail.com/test/test.git

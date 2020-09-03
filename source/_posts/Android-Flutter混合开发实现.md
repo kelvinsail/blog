@@ -7,7 +7,9 @@ categories:
   - Android
   - Flutter
 toc: false
+date: 2020-07-31 17:49:06
 ---
+
 
 # 混合开发
 > 目前来说作为纯Flutter开发的app较少，基本都是将flutter作为共用的组件来开发、在Android\iOS原生项目中引入进行使用，而且个人感觉Android Studio对Native引用Flutter项目的支持比较好（AS 3.6）

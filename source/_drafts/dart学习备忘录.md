@@ -53,20 +53,23 @@ assert 语句
 
 - import
   
-  ```
+```
   // 导入核心库
   import 'dart:math';
   // 从外部 Package 中导入库
   import 'package:test/test.dart';
   // 导入项目文件
    import 'path/to/my_other_file.dart';
-  ```
+```
 - 前缀
-- show
-- hide
+> Android Studio自带的dart语言模板前缀有：
+> - 前缀stless: 创建一个StatelessWidget的子类.
+> - 前缀stful: 创建一个StatefulWidget子类并且关联到一个State子类.
+> - 前缀stanim: 创建一个StatefulWidget子类, 并且它关联的State子类包括一个 AnimationController
 - 通过deferred实现懒加载
+> https://flutter.cn/docs/perf/deferred-components
   
-  ## 类
+## 类
 
 ```
 class Human {
@@ -87,4 +90,3 @@ class Human {
 
 }
 ```
-

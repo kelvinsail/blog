@@ -1,9 +1,8 @@
 ---
 title: MacOS环境下连接ESP32C3烧录固件
 tags:
-  - ESP32C3
   - Mac
-originContent: ''
+  - ESP32C3
 categories:
   - ESP32C3
   - Mac
@@ -20,6 +19,7 @@ date: 2022-03-23 21:00:53
 - pip
   - pip 22.0.4 from /Users/wuyifan/Library/Python/3.8/lib/python/site-packages/pip (python 3.8)
 
+<!-- more -->
 ## 安装esptool
 - 升级pip
   - 命令：`pip3 install --upgrade pip`

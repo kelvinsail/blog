@@ -1,3 +1,4 @@
+---
 title: CentOS 部署Gitlab
 tags:
   - CentOS
@@ -5,9 +6,11 @@ tags:
 categories:
   - CentOS
   - Gitlab
+toc: false
 author: yifan
 date: 2019-05-08 00:10:00
 ---
+
 # 准备工作
 
 > <span style="color:red">注意！需要4G+内存</span>，并不是说4G以下就无法安装....但是会容易出现无法预知的问题，比如经常出现502页面
@@ -263,3 +266,27 @@ gitlab-ctl restart
 ## 关闭注册功能
 > 进入管理中心 - 设置 - `取消`启用注册 - 保存
 > ![upload successful](/images/pasted-2.png)
+
+# 卸载Gitlab
+
+## 停止gitlab
+```sudo gitlab-ctl stop```
+## 卸载gitlab（这块注意了，看看是gitlab-ce版本还是gitlab-ee版本，别写错误了）
+```sudo rpm -e gitlab-ce```
+
+## 查看gitlab进程
+``` ps -ef|grep gitlab```
+> 杀掉第一个守护进程(runsvdir -P /opt/gitlab/service log)
+>     ```kill -9 4473```
+>     再次查看gitlab进程是否存在
+
+## 删除gitlab文件
+
+```
+find / -name *gitlab*|xargs rm -rf      删除所有包含gitlab的文件及目录
+find / -name gitlab |xargs rm -rf 
+```
+
+> 删除gitlab-ctl uninstall时自动在root下备份的配置文件（ls /root/gitlab* 看看有没有，有也删除）
+
+> 通过以上几步就可以彻底卸载gitlab

@@ -1,3 +1,4 @@
+---
 title: Android-Handler消息处理机制
 tags:
   - Android
@@ -6,15 +7,17 @@ tags:
 categories:
   - Android
   - Handler
+toc: false
 date: 2019-05-10 14:26:47
 ---
+
 ## UI线程
 - 每一个应用启动时，系统都会为其分配一个进程、一个主线程，默认情况下所有的组件、操作都在该线程下运行执行；
 - Android的单线程模型，UI操作不是线程安全，而且所有的UI操作都必须在主线程中执行；
 - 而主线程主要负责也是与UI相关的操作，比如控件绘制、View事件分发等，因此主线程也叫UI线程；
 <!-- more -->
 - 4.0之后开始禁止在主线程中访问网络等耗时操作，当主线程被堵塞5秒就会出现了ANR提示；
-- 为了解决线程间交互的问题，Android提供了Handler+MessageQueue+Lopper消息处理机制；
+- 为了解决线程间交互的问题，Android提供了Handler+MessageQueue+Looper消息处理机制；
 
 ## Handler、Looper、Message以及MessageQueue
 ### Message

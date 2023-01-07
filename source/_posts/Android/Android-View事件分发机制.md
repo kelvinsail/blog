@@ -1,12 +1,15 @@
+---
 title: Android View事件分发机制
-author: yifan
 tags:
   - Android
   - View事件分发机制
 categories:
   - Android
+toc: false
+author: yifan
 date: 2019-05-18 22:00:00
 ---
+
 # 相关知识
 ## Activity
 - Activity中也有`dispatchTouchEvent()`和`onTouchEvnet()`函数，但没有实际参与分发机制，纯粹的只是通过Activity绑定的window对象，将事件传递给了decorView，也就是根节点布局。
@@ -30,7 +33,7 @@ onTouchEvnet() //处理、消费事件
 
 # 具体过程
 ## 分发 dispatchTouchEvent()
-> Touch事件发生时，Activity的dispatchTouch Event()函数会将事件传递给绑定的window对象中的最外层decorView，也就是rootView，并通过该view的dispatchTouchEvent()函数对事件进行分发（即从根元素依次往下传递，知道最内层子元素或其中某一元素由于某一条件停止传递）；一般来说，并不会重写控件中的`dispatcTouchEvent()`函数，因为其并不参与事件的响应或消费，仅做分发处理；
+> Touch事件发生时，Activity的dispatchTouchEvent()函数会将事件传递给绑定的window对象中的最外层decorView，也就是rootView，并通过该view的dispatchTouchEvent()函数对事件进行分发（即从根元素依次往下传递，知道最内层子元素或其中某一元素由于某一条件停止传递）；一般来说，并不会重写控件中的`dispatcTouchEvent()`函数，因为其并不参与事件的响应或消费，仅做分发处理；
 
 dispatchTouchEvent的事件分发逻辑如下：
 - 如果`return true`，事件会分发给当前的view并由`onTouchEvent()`函数进行消费，同时停止继续传递分发，当`onTouchEvent`返回`true`时，则代表该事件已被消费，事件结束；

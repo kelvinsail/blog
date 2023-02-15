@@ -13,7 +13,7 @@ date: 2022-03-10 23:25:30
 # 一、Dart单线程模型
 
 ![71646925800_.pic_副本.png](/images/2022/03/10/225f70d4-852a-48fc-b7b9-a055cf9104e4.png)
-
+<!-- more -->
 Dart 是单线程模型，有类似与线程的isolate，它是有自己的内存和单线程控制的运行实体，一个Fluuer程序由一个或多个isolate组成，代码默认都在main isolate中执行，而在main isolate中是以Looper消息循环机制来实现dart的事件机制，looper其中包含两个任务队列，一个是“微任务队列” microtask queue，另一个叫做“事件队列” event queue，且微任务的优先级高于事件。基于dart的单线程，代码是按顺序执行，其中的优先级分为：
  - 在 Main 中写代码将最先执行，执行完 Main 中的代码后，Looper就启动并开始循环；
  - 先检查并执行 Microtask Queue 中的任务， 通常使用 scheduleMicrotask 将事件添加到 MicroTask Queue 中；

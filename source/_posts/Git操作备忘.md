@@ -82,3 +82,29 @@ URL：git@e.coding.net:test/test.git
  * [已删除] origin/feature/v10.7.1
  * [已删除] origin/feature/v10.7.2
 ```
+
+
+## 获取信息
+
+- 获取当前git账号名称、email
+
+```
+git config user.name && git config user.email
+```
+
+- 获取当前项目所在分支名
+
+```
+git symbolic-ref --short -q HEAD
+```
+
+- 获取当项目前所在分支最新的提交id
+```
+git rev-parse HEAD
+```
+
+- 用`-C`指定项目路径目录输出信息
+```
+git -C /home/blog symbolic-ref --short -q HEAD
+git -C /home/blog rev-parse HEAD
+```

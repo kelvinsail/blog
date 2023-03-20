@@ -1,16 +1,22 @@
+---
 title: CentOS 部署Jenkins
 tags:
   - CentOS
-  - 自动构建
   - Jenkins
+  - 自动构建
 categories:
   - CentOS
   - Jenkins
+toc: false
 author: yifan
 date: 2018-09-14 15:04:00
 ---
+
 # 1. 安装JDK
+> 开源 Devops 工具 Jenkins 在官方博客平台宣布，从 6 月 28 日发布的 Jenkins 2.357 和将于 9 月发布的 LTS 版本开始，Jenkins 需要 Java 11 才能使用，将放弃 Java 8，可以安装2.357以下的版本但是据说安装插件会有很多问题，建议安装Java11以便于后续升级、安装插件；
+>
 > 确认此前未安装过JDK，如果安装过先确认jdk不是gcj版本，否则Jenkins可能运行异常，需要卸载重装JDK；
+
 - 查看jdk版本 
 ```
 # java -version
@@ -22,20 +28,23 @@ date: 2018-09-14 15:04:00
 <!-- more -->
 - 搜索open-jdk
 ```
-# yum search openjdk
+# yum search openjdk //或者 yum -y list java*
 ```
 
 ![upload successful](/images/pasted-67.png)
 
 - 安装open-jdk
 ```
-# yum install java-1.8.0-openjdk
+# yum install -y java-11-openjdk*
+# rpm -qa | grep jdk 
+# yum install epel-release
+# yum install java-11-openjdk-devel
 ```
 - 再检查JDK版本
-> [root@localhost ~]# java -version
-openjdk version "1.8.0_161"
-OpenJDK Runtime Environment (build 1.8.0_161-b14)
-OpenJDK 64-Bit Server VM (build 25.161-b14, mixed mode)
+# java -version
+openjdk version "11.0.18" 2023-01-17 LTS
+OpenJDK Runtime Environment (Red_Hat-11.0.18.0.10-1.el7_9) (build 11.0.18+10-LTS)
+OpenJDK 64-Bit Server VM (Red_Hat-11.0.18.0.10-1.el7_9) (build 11.0.18+10-LTS, mixed mode, sharing)
 
 # 2. 安装GIT，如果已安装则跳过
 ```
@@ -44,15 +53,15 @@ yum install git
 # 3. 开始安装Jenkins
 - 下载依赖
 ```
-wget -O /etc/yum.repos.d/jenkins.repo http://jenkins-ci.org/redhat/jenkins.repo
+sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
 ```
 - 导入秘钥
 ```
-rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
 ```
 - 开始安装
 ```
-yum install jenkins
+sudo yum install jenkins
 ```
 
 ![upload successful](/images/pasted-68.png)
@@ -70,7 +79,13 @@ chkconfig --list | grep jenkins
 - 启动jenkins，进入部署界面
 > 使用阿里ECS需要先检查对应的端口是否已经加入安全组，不然无法访问
 ```
-service jenkins start
+sudo service jenkins start
+```
+
+- 设置开机自动启动
+```
+sudo systemctl enable jenkins
+systemctl status jenkins
 ```
 
 ![upload successful](/images/pasted-71.png)

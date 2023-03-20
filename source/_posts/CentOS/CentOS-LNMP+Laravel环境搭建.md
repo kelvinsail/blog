@@ -1,3 +1,4 @@
+---
 title: CentOS LNMP + Laravel环境搭建
 tags:
   - CentOS
@@ -7,9 +8,11 @@ categories:
   - CentOS
   - LNMP
   - Laravel
+toc: false
 author: yifan
 date: 2018-02-06 22:39:00
 ---
+
 # 1.安装vim、screen、wget；
 ```
 yum install vim screen wget
@@ -45,7 +48,7 @@ screen –R lnmp
 # 7.等待安装完成
 # 8.安装完成后，进入mysql，开启mysql远程授权
 ```
-mysql –uroot -p
+mysql –u root -p
 use mysql;
 grant all privileges on *.* to '账号名'@'%' identified by '密码' with grant option;
 flush privileges;

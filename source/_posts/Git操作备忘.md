@@ -83,6 +83,12 @@ URL：git@e.coding.net:test/test.git
  * [已删除] origin/feature/v10.7.2
 ```
 
+## 暂存/取出修改
+```
+git stash //暂存
+git stash pop //取出
+```
+
 
 ## 获取信息
 

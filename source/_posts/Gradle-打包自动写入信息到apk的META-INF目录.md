@@ -12,6 +12,8 @@ date: 2023-03-20 15:06:12
 
 # Gradle自动写入打包分支、commitId、git账号信息到apk的META-INF目录
 ## 根目录创建`buildInfo.gradle`文件，编写task
+
+<!-- more -->
 ```
 /**
  * 获取当前git账号名、email
@@ -29,7 +31,6 @@ task getGitBuilderName {
     builder = "${out.toString().replaceFirst("\n","(").replaceFirst("\n",")")}"
 }
 
-<!-- more -->
 /**
  * 获取原生项目分支名称+最后一次commit的id
  */

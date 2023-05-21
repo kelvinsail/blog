@@ -77,9 +77,21 @@ cd ~/Library/Android/sdk/tools/bin
 ```
 - 根据提示，输入y
 
-## Android Studio 3.5 xml代码格式化错乱问题
+## Android Studio
+### Android Studio 3.5 xml代码格式化错乱问题
 - 打开任意xml文件
 - 快键键打开代码格式化选项弹窗
   - Windows: ctrl + shift + alt + l 
   - macOS: command + shift+ option + L
 - 取消勾选"Rerange code"
+
+### win控制台中文错乱问题
+- 打开`Help` -> `Edit Custom VM Options` 
+- 添加`-Dfile.encoding=UTF-8`，重启AS
+
+### 无法调试断点
+- `File` -> `Setting` -> `Plugins`  -> 移除`Android NDK Support`勾选
+
+### win平台sdkmanager提示`Failed to download any source lists!`
+如果开了代理，需要设置下代理端口号
+执行`sdkmanager --list --verbose --no_https --proxy=http --proxy_host=127.0.0.1 --proxy_port=端口号`

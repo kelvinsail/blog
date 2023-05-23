@@ -77,10 +77,10 @@ public class Singleton{
 
     private Singleton(){}
 
-    public static Singleton getInstance(){
+    public static Singleton getInstance() {
         if (null == mInstance){
-            synchronized(Singleton.class){
-                if ( null == Singleton){
+            synchronized(Singleton.class) {
+                if ( null == mInstance) {
                     mInstance = new Singleton();
                 }
             }

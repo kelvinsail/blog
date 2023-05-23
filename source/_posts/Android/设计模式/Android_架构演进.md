@@ -42,7 +42,7 @@ date: 2019-07-23 11:25:20
 
 
 ## 3、说明
-- 使用iView+iPresenter结构，优化了原有的MVC架构，拆分了Acitvity的数据业务处理功能，使Activity作为试图空时期的一部分，而Preserter作为一个真正独立的数据业务处理角色；
+- 使用iView+iPresenter结构，优化了原有的MVC架构，拆分了Acitvity的数据业务处理功能，使Activity作为视图空时期的一部分，而Preserter作为一个真正独立的数据业务处理角色；
 - 但这样的实现方式使代码冗余程度大大增加，往往一个功能的实现，iPreserter、iView都需要定义新的接口，复用过程也留下会有许多不需要实现的函数；
 
 # MVVM

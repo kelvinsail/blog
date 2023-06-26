@@ -1,7 +1,11 @@
 ---
 title: macOS卸载nodejs 安装nvm管理
-tags: []
-categories: []
+tags:
+  - nodejs
+  - Mac
+categories:
+  - nodejs
+  - Mac
 toc: false
 date: 2023-03-21 10:09:44
 ---

@@ -30,6 +30,22 @@ python get-pip.py
 ## 安装插件`zstandard`
 - 运行`pip install zstandard`
 
+## 安装插件`pyelliptic`
+> pyelliptic如果通过pip自动安装，运行脚本时会抛出异常`Couldn’t load OpenSSL lib`，需要手动下载[`pyelliptic 1.5.10`(传送门)](https://github.com/mfranciszkiewicz/pyelliptic/archive/1.5.10.tar.gz#egg=pyelliptic)手动操作：
+
+- 1.解压后，修改源文件中的`pyelliptic-1.5.10/pyelliptic/openssl.py`中的`crypto`引用路径：
+```
+def find_crypto_lib():
+    if sys.platform != 'win32':
+       # 注释掉下面路径,写绝对路径
+       # return ctypes.util.find_library('crypto')
+       return '/usr/lib/libcrypto.dylib'
+```
+- 2.回到根目录，执行安装
+```
+python setup.py install
+```
+
 ## 下载腾讯`mars`开源库
 - [mars传送门](https://github.com/Tencent/mars)
 - 下载压缩包，解压，提取复制`mars/log`这个文件夹到存放其他目录（别随便放，不能随便删除，不然运行不了python解密）
